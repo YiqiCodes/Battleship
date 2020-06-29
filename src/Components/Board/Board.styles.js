@@ -10,6 +10,8 @@ export const Square = styled.div`
 export const BoardRow = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 520px;
 `;
 
 export const BoardColumn = styled.div`
