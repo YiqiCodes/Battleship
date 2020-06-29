@@ -1,7 +1,9 @@
 import React from "react";
 
+import Board from "../../Components/Board/Board";
+
 const Home = () => {
-  return <div>hi</div>;
+  return <Board />;
 };
 
 export default Home;
