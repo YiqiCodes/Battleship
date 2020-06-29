@@ -1,120 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Styles
-import { Square, BoardRow, BoardColumn } from "./Board.styles";
+import { Square, BoardRow } from "./Board.styles";
 
 const Board = () => {
+  const [boat, setBoat] = useState();
+
+  useEffect(() => {
+    checkBoat();
+  });
+
+  // Check boat
+  const checkBoat = () => {};
+
   // Board Logic
-  const board = [];
-  for (let row = 0; row < 10; row++) {
-    board[row] = [];
-  }
+  let board = [];
+  for (let i = 1; i <= 100; i++) board.push(i);
 
   const onClick = (value) => {
-    console.log(value);
+    setBoat(value);
   };
 
   return (
     <>
-      <BoardColumn>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square value={index} onClick={() => onClick(index)}></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={10 + index}
-                onClick={() => onClick(10 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={20 + index}
-                onClick={() => onClick(20 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={30 + index}
-                onClick={() => onClick(30 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={40 + index}
-                onClick={() => onClick(40 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={50 + index}
-                onClick={() => onClick(50 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={60 + index}
-                onClick={() => onClick(60 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={70 + index}
-                onClick={() => onClick(70 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={80 + index}
-                onClick={() => onClick(80 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-        <BoardRow>
-          {board.map((value, index) => {
-            return (
-              <Square
-                value={90 + index}
-                onClick={() => onClick(90 + index)}
-              ></Square>
-            );
-          })}
-        </BoardRow>
-      </BoardColumn>
+      <BoardRow>
+        {board.map((squareposition) => {
+          return (
+            <Square
+              style={{ background: boat === squareposition ? "black" : "" }}
+              value={squareposition}
+              onClick={() => onClick(squareposition)}
+            ></Square>
+          );
+        })}
+      </BoardRow>
     </>
   );
 };
