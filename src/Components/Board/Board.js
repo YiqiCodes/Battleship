@@ -99,7 +99,13 @@ const Board = () => {
       <BoardOutterContainer>
         {/* Human Board */}
         <BoardTitleContainer>
-          <p>Your Board</p>
+          {humanWin ? (
+            <p>Human Wins!</p>
+          ) : computerWin ? (
+            <p>Human Loses!</p>
+          ) : (
+            <p>Your Board</p>
+          )}
           <BoardContainer>
             {board.map((boatPosition) => {
               return (
@@ -107,24 +113,35 @@ const Board = () => {
                   style={{
                     background:
                       humanBoat === boatPosition
-                        ? "black"
+                        ? "green"
                         : squaresComputerAttacked.includes(boatPosition)
                         ? "#FF9387"
+                        : computerWin === true
+                        ? "#EBDD2F"
                         : "",
                   }}
                   value={boatPosition}
                   // Cannot click on human board if game is started
                   onClick={
-                    started ? null : () => positionHumanBoat(boatPosition)
+                    !started && !humanWin && !computerWin
+                      ? () => positionHumanBoat(boatPosition)
+                      : null
                   }
                 ></Square>
               );
             })}
           </BoardContainer>
         </BoardTitleContainer>
+
         {/* Computer Board */}
         <BoardTitleContainer>
-          <p>Computer's Board</p>
+          {computerWin ? (
+            <p>Computer Wins!</p>
+          ) : humanWin ? (
+            <p>Computer Loses!</p>
+          ) : (
+            <p>Computer's Board</p>
+          )}
           <BoardContainer>
             {board.map((computerBoatPosition) => {
               return (
@@ -144,13 +161,17 @@ const Board = () => {
                   value={computerBoatPosition}
                   // Can click on computer board if game is started
                   onClick={
-                    started ? () => attackComputer(computerBoatPosition) : null
+                    started && !humanWin && !computerWin
+                      ? () => attackComputer(computerBoatPosition)
+                      : null
                   }
                 ></Square>
               );
             })}
           </BoardContainer>
         </BoardTitleContainer>
+
+        {/* Game Buttons */}
         <ButtonsContainer>
           {!started ? (
             <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
