@@ -14,8 +14,8 @@ const Board = () => {
   const [humanBoat, setHumanBoat] = useState();
   const [enemyBoat, setEnemyBoat] = useState();
   const [attackPosition, setAttackPosition] = useState();
-  // const squaresHumanAttacked = [];
-  // const squaresComputerAttacked = [];
+  const [squaresHumanAttacked, setSquaresHumanAttacked] = useState([]);
+  const [squaresComputerAttacked, setSquaresComputerAttacked] = useState([]);
 
   // Board Logic
   let board = [];
@@ -42,27 +42,28 @@ const Board = () => {
   };
 
   const finalizeAttack = (finalAttack) => {
-    console.log("attacked computer!", finalAttack);
-
-    // Add to squares human attacked
-
-    // Check if human hit/win function
-    if (finalAttack === enemyBoat) console.log("YOU WIN!!");
+    // Add to squares Human attacked
+    setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
+    console.log("squares human attacked:", squaresHumanAttacked);
 
     // AI guess function
     const computerAttack = Math.floor(Math.random() * 100) + 1;
     console.log("computer attacked", computerAttack);
-    // setAttackPosition(finalAttack);
 
-    // Check if computer hit/win function
+    // Add to squares Computer attacked
+    setSquaresComputerAttacked([...squaresComputerAttacked, computerAttack]);
+    console.log("squares computer attacked:", squaresComputerAttacked);
+
+    // Check if Human hit/win function
+    if (finalAttack === enemyBoat) console.log("YOU WIN!!");
+
+    // Check if Computer hit/win function
     if (computerAttack === humanBoat) console.log("COMPUTER WINS!!");
   };
 
   console.log("is game started??", started);
   console.log("computer boat position", enemyBoat);
   console.log("human boat position", humanBoat);
-  // console.log("squares human attacked", squaresHumanAttacked);
-  // console.log("squares computer attacked", squaresComputerAttacked)
 
   return (
     <>
