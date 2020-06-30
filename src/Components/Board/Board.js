@@ -46,12 +46,16 @@ const Board = () => {
 
     // Add to squares human attacked
 
-    // Check if hit/win function
+    // Check if human hit/win function
     if (finalAttack === enemyBoat) console.log("YOU WIN!!");
 
     // AI guess function
-
+    const computerAttack = Math.floor(Math.random() * 100) + 1;
+    console.log("computer attacked", computerAttack);
     // setAttackPosition(finalAttack);
+
+    // Check if computer hit/win function
+    if (computerAttack === humanBoat) console.log("COMPUTER WINS!!");
   };
 
   console.log("is game started??", started);
