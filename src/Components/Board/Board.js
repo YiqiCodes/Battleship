@@ -88,6 +88,9 @@ const Board = () => {
     setSquaresHumanAttacked([null]);
     setSquaresComputerAttacked([null]);
     gameStarted(false);
+    setHumanWin(false);
+    setComputerWin(false);
+    setEnemyBoatRevealed(null);
   };
 
   console.log("is game started??", started);
@@ -176,7 +179,7 @@ const Board = () => {
           {!started ? (
             <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
           ) : null}
-          {started ? (
+          {started && !humanWin && !computerWin ? (
             <ShootButton onClick={() => finalizeAttack(attackPosition)}>
               Fire!
             </ShootButton>
