@@ -16,9 +16,12 @@ const Board = () => {
   const [started, gameStarted] = useState(false);
   const [humanBoat, setHumanBoat] = useState();
   const [enemyBoat, setEnemyBoat] = useState();
+  const [enemyBoatRevealed, setEnemyBoatRevealed] = useState();
   const [attackPosition, setAttackPosition] = useState();
   const [squaresHumanAttacked, setSquaresHumanAttacked] = useState([]);
   const [squaresComputerAttacked, setSquaresComputerAttacked] = useState([]);
+  const [humanWin, setHumanWin] = useState(false);
+  const [computerWin, setComputerWin] = useState(false);
 
   // Board Logic
   let board = [];
@@ -60,6 +63,8 @@ const Board = () => {
     // Check if Human hit/win function
     if (finalAttack === enemyBoat) {
       console.log("YOU WIN!!");
+      setHumanWin(true);
+      setEnemyBoatRevealed(enemyBoat);
     } else {
       console.log("HUMAN MISS");
     }
@@ -67,6 +72,7 @@ const Board = () => {
     // Check if Computer hit/win function
     if (computerAttack === humanBoat) {
       console.log("COMPUTER WINS!!");
+      setComputerWin(true);
     } else {
       console.log("COMPUTER MISS");
     }
@@ -103,7 +109,7 @@ const Board = () => {
                       humanBoat === boatPosition
                         ? "black"
                         : squaresComputerAttacked.includes(boatPosition)
-                        ? "#dda91b"
+                        ? "#FF9387"
                         : "",
                   }}
                   value={boatPosition}
@@ -127,8 +133,12 @@ const Board = () => {
                     background:
                       attackPosition === computerBoatPosition
                         ? "red"
+                        : enemyBoatRevealed === computerBoatPosition
+                        ? "green"
                         : squaresHumanAttacked.includes(computerBoatPosition)
-                        ? "#dda91b"
+                        ? "#FF9387"
+                        : humanWin === true
+                        ? "#EBDD2F"
                         : "",
                   }}
                   value={computerBoatPosition}
@@ -152,7 +162,7 @@ const Board = () => {
           ) : null}
           {started ? (
             <RestartGameButton onClick={() => restartGame()}>
-              Restart
+              Play Again
             </RestartGameButton>
           ) : null}
         </ButtonsContainer>
