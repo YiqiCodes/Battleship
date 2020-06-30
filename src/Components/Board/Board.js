@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // Styles
 import {
@@ -11,17 +11,15 @@ import {
 
 const Board = () => {
   const [started, gameStarted] = useState(false);
-  const [boat, setBoat] = useState();
-  const [enemyboat, setEnemyBoat] = useState();
+  const [humanBoat, setHumanBoat] = useState();
+  const [enemyBoat, setEnemyBoat] = useState();
   const [attackPosition, setAttackPosition] = useState();
+  // const squaresHumanAttacked = [];
+  // const squaresComputerAttacked = [];
 
   // Board Logic
   let board = [];
   for (let i = 1; i <= 100; i++) board.push(i);
-
-  // Check if hit function
-
-  // AI guess function
 
   // Start the game && position Computer boat
   const startGame = () => {
@@ -30,7 +28,7 @@ const Board = () => {
   };
 
   const positionHumanBoat = (value) => {
-    setBoat(value);
+    setHumanBoat(value);
   };
 
   const positionEnemyBoat = () => {
@@ -39,13 +37,28 @@ const Board = () => {
   };
 
   const attackComputer = (computerBoatPosition) => {
-    console.log("attack computer", computerBoatPosition);
+    console.log("attack computer?", computerBoatPosition);
     setAttackPosition(computerBoatPosition);
   };
 
+  const finalizeAttack = (finalAttack) => {
+    console.log("attacked computer!", finalAttack);
+
+    // Add to squares human attacked
+
+    // Check if hit/win function
+    if (finalAttack === enemyBoat) console.log("YOU WIN!!");
+
+    // AI guess function
+
+    // setAttackPosition(finalAttack);
+  };
+
   console.log("is game started??", started);
-  console.log("computer boat position", enemyboat);
-  console.log("human boat position", boat);
+  console.log("computer boat position", enemyBoat);
+  console.log("human boat position", humanBoat);
+  // console.log("squares human attacked", squaresHumanAttacked);
+  // console.log("squares computer attacked", squaresComputerAttacked)
 
   return (
     <>
@@ -56,7 +69,9 @@ const Board = () => {
           {board.map((boatPosition) => {
             return (
               <Square
-                style={{ background: boat === boatPosition ? "black" : "" }}
+                style={{
+                  background: humanBoat === boatPosition ? "black" : "",
+                }}
                 value={boatPosition}
                 // Cannot click on human board if game is started
                 onClick={started ? null : () => positionHumanBoat(boatPosition)}
@@ -80,13 +95,15 @@ const Board = () => {
                 value={computerBoatPosition}
                 // Can click on computer board if game is started
                 onClick={
-                  !started ? null : () => attackComputer(computerBoatPosition)
+                  started ? () => attackComputer(computerBoatPosition) : null
                 }
               ></Square>
             );
           })}
         </BoardContainer>
-        <ShootButton>Fire!</ShootButton>
+        <ShootButton onClick={() => finalizeAttack(attackPosition)}>
+          Fire!
+        </ShootButton>
       </BoardOutterContainer>
     </>
   );
