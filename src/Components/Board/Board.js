@@ -55,10 +55,21 @@ const Board = () => {
     console.log("squares computer attacked:", squaresComputerAttacked);
 
     // Check if Human hit/win function
-    if (finalAttack === enemyBoat) console.log("YOU WIN!!");
+    if (finalAttack === enemyBoat) {
+      console.log("YOU WIN!!");
+    } else {
+      console.log("HUMAN MISS");
+    }
 
     // Check if Computer hit/win function
-    if (computerAttack === humanBoat) console.log("COMPUTER WINS!!");
+    if (computerAttack === humanBoat) {
+      console.log("COMPUTER WINS!!");
+    } else {
+      console.log("COMPUTER MISS");
+    }
+
+    // Reset Attack Position
+    setAttackPosition(null);
   };
 
   console.log("is game started??", started);
@@ -75,7 +86,12 @@ const Board = () => {
             return (
               <Square
                 style={{
-                  background: humanBoat === boatPosition ? "black" : "",
+                  background:
+                    humanBoat === boatPosition
+                      ? "black"
+                      : squaresComputerAttacked.includes(boatPosition)
+                      ? "#dda91b"
+                      : "",
                 }}
                 value={boatPosition}
                 // Cannot click on human board if game is started
@@ -95,7 +111,11 @@ const Board = () => {
               <Square
                 style={{
                   background:
-                    attackPosition === computerBoatPosition ? "red" : "",
+                    attackPosition === computerBoatPosition
+                      ? "red"
+                      : squaresHumanAttacked.includes(computerBoatPosition)
+                      ? "#dda91b"
+                      : "",
                 }}
                 value={computerBoatPosition}
                 // Can click on computer board if game is started
