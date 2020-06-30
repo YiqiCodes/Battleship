@@ -33,49 +33,67 @@ const Board = () => {
     gameStarted(true);
   };
 
+  // Human sets boat position
   const positionHumanBoat = (value) => {
     setHumanBoat(value);
   };
 
+  // Randomly places enemy boat
   const positionEnemyBoat = () => {
     const positionComputerBoat = Math.floor(Math.random() * 100) + 1;
     setEnemyBoat(positionComputerBoat);
   };
 
-  const attackComputer = (computerBoatPosition) => {
-    console.log("attack computer?", computerBoatPosition);
-    setAttackPosition(computerBoatPosition);
+  // Sets attack position & turns square red
+  const attackComputer = (attackComputerBoat) => {
+    console.log("attack computer?", attackComputerBoat);
+    if (squaresHumanAttacked.includes(attackComputerBoat)) {
+      setAttackPosition(null);
+    } else {
+      setAttackPosition(attackComputerBoat);
+    }
   };
 
   const finalizeAttack = (finalAttack) => {
-    // Add to squares Human attacked
-    setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
-    console.log("squares human attacked:", squaresHumanAttacked);
+    const humanTurn = () => {
+      // Add to squares Human attacked
+      setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
+      console.log("squares human attacked:", squaresHumanAttacked);
+      // Check if Human hit/win function
+      if (finalAttack === enemyBoat) {
+        console.log("YOU WIN!!");
+        setHumanWin(true);
+        setEnemyBoatRevealed(enemyBoat);
+      } else {
+        console.log("HUMAN MISS");
+      }
+    };
 
-    // AI guess function
-    const computerAttack = Math.floor(Math.random() * 100) + 1;
-    console.log("computer attacked", computerAttack);
+    const computerTurn = () => {
+      // AI guess function
+      const computerAttack = Math.floor(Math.random() * 100) + 1;
+      // Cannot guess the same square
+      if (squaresComputerAttacked.includes(computerAttack)) {
+        computerTurn();
+      } else {
+        // Add to squares Computer attacked
+        setSquaresComputerAttacked([
+          ...squaresComputerAttacked,
+          computerAttack,
+        ]);
+        console.log("squares computer attacked:", squaresComputerAttacked);
+        // Check if Computer hit/win function
+        if (computerAttack === humanBoat) {
+          console.log("COMPUTER WINS!!");
+          setComputerWin(true);
+        } else {
+          console.log("COMPUTER MISS");
+        }
+      }
+    };
 
-    // Add to squares Computer attacked
-    setSquaresComputerAttacked([...squaresComputerAttacked, computerAttack]);
-    console.log("squares computer attacked:", squaresComputerAttacked);
-
-    // Check if Human hit/win function
-    if (finalAttack === enemyBoat) {
-      console.log("YOU WIN!!");
-      setHumanWin(true);
-      setEnemyBoatRevealed(enemyBoat);
-    } else {
-      console.log("HUMAN MISS");
-    }
-
-    // Check if Computer hit/win function
-    if (computerAttack === humanBoat) {
-      console.log("COMPUTER WINS!!");
-      setComputerWin(true);
-    } else {
-      console.log("COMPUTER MISS");
-    }
+    humanTurn();
+    computerTurn();
 
     // Reset Attack Position
     setAttackPosition(null);
@@ -179,11 +197,13 @@ const Board = () => {
           {!started ? (
             <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
           ) : null}
+
           {started && !humanWin && !computerWin ? (
             <ShootButton onClick={() => finalizeAttack(attackPosition)}>
               Fire!
             </ShootButton>
           ) : null}
+
           {started ? (
             <RestartGameButton onClick={() => restartGame()}>
               Play Again
