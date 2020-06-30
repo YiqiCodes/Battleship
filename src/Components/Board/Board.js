@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import {
   Square,
   BoardContainer,
+  BoardTitleContainer,
   BoardOutterContainer,
+  ButtonsContainer,
   StartGameButton,
+  RestartGameButton,
   ShootButton,
 } from "./Board.styles";
 
@@ -72,63 +75,87 @@ const Board = () => {
     setAttackPosition(null);
   };
 
+  const restartGame = () => {
+    setHumanBoat(null);
+    setEnemyBoat(null);
+    setAttackPosition(null);
+    setSquaresHumanAttacked([null]);
+    setSquaresComputerAttacked([null]);
+    gameStarted(false);
+  };
+
   console.log("is game started??", started);
   console.log("computer boat position", enemyBoat);
   console.log("human boat position", humanBoat);
 
   return (
     <>
-      {/* Human Board */}
       <BoardOutterContainer>
-        <p>Your Board</p>
-        <BoardContainer>
-          {board.map((boatPosition) => {
-            return (
-              <Square
-                style={{
-                  background:
-                    humanBoat === boatPosition
-                      ? "black"
-                      : squaresComputerAttacked.includes(boatPosition)
-                      ? "#dda91b"
-                      : "",
-                }}
-                value={boatPosition}
-                // Cannot click on human board if game is started
-                onClick={started ? null : () => positionHumanBoat(boatPosition)}
-              ></Square>
-            );
-          })}
-        </BoardContainer>
-        <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
-      </BoardOutterContainer>
-      {/* Computer Board */}
-      <BoardOutterContainer>
-        <p>Computer's Board</p>
-        <BoardContainer>
-          {board.map((computerBoatPosition) => {
-            return (
-              <Square
-                style={{
-                  background:
-                    attackPosition === computerBoatPosition
-                      ? "red"
-                      : squaresHumanAttacked.includes(computerBoatPosition)
-                      ? "#dda91b"
-                      : "",
-                }}
-                value={computerBoatPosition}
-                // Can click on computer board if game is started
-                onClick={
-                  started ? () => attackComputer(computerBoatPosition) : null
-                }
-              ></Square>
-            );
-          })}
-        </BoardContainer>
-        <ShootButton onClick={() => finalizeAttack(attackPosition)}>
-          Fire!
-        </ShootButton>
+        {/* Human Board */}
+        <BoardTitleContainer>
+          <p>Your Board</p>
+          <BoardContainer>
+            {board.map((boatPosition) => {
+              return (
+                <Square
+                  style={{
+                    background:
+                      humanBoat === boatPosition
+                        ? "black"
+                        : squaresComputerAttacked.includes(boatPosition)
+                        ? "#dda91b"
+                        : "",
+                  }}
+                  value={boatPosition}
+                  // Cannot click on human board if game is started
+                  onClick={
+                    started ? null : () => positionHumanBoat(boatPosition)
+                  }
+                ></Square>
+              );
+            })}
+          </BoardContainer>
+        </BoardTitleContainer>
+        {/* Computer Board */}
+        <BoardTitleContainer>
+          <p>Computer's Board</p>
+          <BoardContainer>
+            {board.map((computerBoatPosition) => {
+              return (
+                <Square
+                  style={{
+                    background:
+                      attackPosition === computerBoatPosition
+                        ? "red"
+                        : squaresHumanAttacked.includes(computerBoatPosition)
+                        ? "#dda91b"
+                        : "",
+                  }}
+                  value={computerBoatPosition}
+                  // Can click on computer board if game is started
+                  onClick={
+                    started ? () => attackComputer(computerBoatPosition) : null
+                  }
+                ></Square>
+              );
+            })}
+          </BoardContainer>
+        </BoardTitleContainer>
+        <ButtonsContainer>
+          {!started ? (
+            <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
+          ) : null}
+          {started ? (
+            <ShootButton onClick={() => finalizeAttack(attackPosition)}>
+              Fire!
+            </ShootButton>
+          ) : null}
+          {started ? (
+            <RestartGameButton onClick={() => restartGame()}>
+              Restart
+            </RestartGameButton>
+          ) : null}
+        </ButtonsContainer>
       </BoardOutterContainer>
     </>
   );
