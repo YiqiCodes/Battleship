@@ -9,13 +9,13 @@ export const BoardContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 520px;
+  max-width: 275px;
   margin: 2rem;
 `;
 
 export const Square = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 25px;
+  height: 25px;
   background: #eeeeee;
   border: 1px solid slategray;
 `;
