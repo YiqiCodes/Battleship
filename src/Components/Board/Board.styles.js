@@ -48,3 +48,9 @@ export const ShootButton = styled.button`
   height: 2rem;
   background: red;
 `;
+
+export const BoatSelectorButton = styled.button`
+  width: 5rem;
+  height: 2rem;
+  background: pink;
+`;
