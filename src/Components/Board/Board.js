@@ -11,6 +11,7 @@ import {
   RestartGameButton,
   ShootButton,
   BoatSelectorButton,
+  PlaceBoatsDiv,
 } from "./Board.styles";
 
 const Board = () => {
@@ -69,10 +70,20 @@ const Board = () => {
   for (let i = 1; i <= 100; i++) board.push(i);
 
   // NEED TO CHECK ALL BOATS ARE PLACED
+
   // Start the game && position Computer boat
   const startGame = () => {
-    positionEnemyBoat();
-    gameStarted(true);
+    console.log("TEST", humanBoat);
+    if (
+      humanBoat &&
+      humanBoatTwo &&
+      humanBoatThree &&
+      humanBoatFour &&
+      humanBoatFive
+    ) {
+      positionEnemyBoat();
+      gameStarted(true);
+    }
   };
 
   // Human sets boat position
@@ -330,11 +341,11 @@ const Board = () => {
   };
 
   console.log("is game started??", started);
-  // console.log("computer boat position", enemyBoat);
-  // console.log("computer boat 2 position", enemyBoatTwo);
-  // console.log("computer boat 3 position", enemyBoatThree);
-  // console.log("computer boat 4 position", enemyBoatFour);
-  // console.log("computer boat 5 position", enemyBoatFive);
+  console.log("computer boat position", enemyBoat);
+  console.log("computer boat 2 position", enemyBoatTwo);
+  console.log("computer boat 3 position", enemyBoatThree);
+  console.log("computer boat 4 position", enemyBoatFour);
+  console.log("computer boat 5 position", enemyBoatFive);
   // console.log("human boat position", humanBoat);
   // console.log("enemy boat sunk?", enemyBoatsHit);
   console.log(
@@ -441,19 +452,31 @@ const Board = () => {
                       attackPosition === computerBoatPosition
                         ? "red"
                         : enemyBoatRevealed === computerBoatPosition
-                        ? "green"
+                        ? "#111111"
                         : enemyBoatRevealedTwo === computerBoatPosition
-                        ? "green"
+                        ? "#111111"
                         : enemyBoatRevealedThree === computerBoatPosition
-                        ? "green"
+                        ? "#111111"
                         : enemyBoatRevealedFour === computerBoatPosition
-                        ? "green"
+                        ? "#111111"
                         : enemyBoatRevealedFive === computerBoatPosition
-                        ? "green"
+                        ? "#111111"
                         : squaresHumanAttacked.includes(computerBoatPosition)
                         ? "#FF9387"
                         : humanWin === true
                         ? "#EBDD2F"
+                        : "",
+                    color:
+                      enemyBoatRevealed === computerBoatPosition
+                        ? "#eeeeee"
+                        : enemyBoatRevealedTwo === computerBoatPosition
+                        ? "#eeeeee"
+                        : enemyBoatRevealedThree === computerBoatPosition
+                        ? "#eeeeee"
+                        : enemyBoatRevealedFour === computerBoatPosition
+                        ? "#eeeeee"
+                        : enemyBoatRevealedFive === computerBoatPosition
+                        ? "#eeeeee"
                         : "",
                   }}
                   value={computerBoatPosition}
@@ -463,7 +486,9 @@ const Board = () => {
                       ? () => attackComputer(computerBoatPosition)
                       : null
                   }
-                ></Square>
+                >
+                  X
+                </Square>
               );
             })}
           </BoardContainer>
@@ -473,22 +498,42 @@ const Board = () => {
         <ButtonsContainer>
           {!started ? (
             <>
-              <StartGameButton onClick={() => startGame()}>
-                Start
-              </StartGameButton>
+              {humanBoat &&
+              humanBoatTwo &&
+              humanBoatThree &&
+              humanBoatFour &&
+              humanBoatFive ? (
+                <StartGameButton onClick={() => startGame()}>
+                  Start
+                </StartGameButton>
+              ) : (
+                <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+              )}
               <BoatSelectorButton onClick={() => positionHumanBoat()}>
                 Boat 1
               </BoatSelectorButton>
-              <BoatSelectorButton onClick={() => positionHumanBoatTwo()}>
+              <BoatSelectorButton
+                style={{ background: "blue" }}
+                onClick={() => positionHumanBoatTwo()}
+              >
                 Boat 2
               </BoatSelectorButton>
-              <BoatSelectorButton onClick={() => positionHumanBoatThree()}>
+              <BoatSelectorButton
+                style={{ background: "cyan" }}
+                onClick={() => positionHumanBoatThree()}
+              >
                 Boat 3
               </BoatSelectorButton>
-              <BoatSelectorButton onClick={() => positionHumanBoatFour()}>
+              <BoatSelectorButton
+                style={{ background: "orange" }}
+                onClick={() => positionHumanBoatFour()}
+              >
                 Boat 4
               </BoatSelectorButton>
-              <BoatSelectorButton onClick={() => positionHumanBoatFive()}>
+              <BoatSelectorButton
+                style={{ background: "purple" }}
+                onClick={() => positionHumanBoatFive()}
+              >
                 Boat 5
               </BoatSelectorButton>
             </>
