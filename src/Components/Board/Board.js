@@ -23,6 +23,11 @@ const Board = () => {
   const [humanBoatThree, setHumanBoatThree] = useState();
   const [humanBoatFour, setHumanBoatFour] = useState();
   const [humanBoatFive, setHumanBoatFive] = useState();
+  const [humanBoatRevealed, setHumanBoatRevealed] = useState();
+  const [humanBoatRevealedTwo, setHumanBoatRevealedTwo] = useState();
+  const [humanBoatRevealedThree, setHumanBoatRevealedThree] = useState();
+  const [humanBoatRevealedFour, setHumanBoatRevealedFour] = useState();
+  const [humanBoatRevealedFive, setHumanBoatRevealedFive] = useState();
   const [humanBoatActive, setHumanBoatActive] = useState(false);
   const [humanBoatTwoActive, setHumanBoatTwoActive] = useState(false);
   const [humanBoatThreeActive, setHumanBoatThreeActive] = useState(false);
@@ -219,7 +224,7 @@ const Board = () => {
 
     const computerTurn = () => {
       // AI guess function
-      const computerAttack = Math.floor(Math.random() * 100) + 1;
+      const computerAttack = Math.floor(Math.random() * 10) + 1;
       // Cannot guess the same square
       if (squaresComputerAttacked.includes(computerAttack)) {
         computerTurn();
@@ -236,6 +241,7 @@ const Board = () => {
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[0] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
+          setHumanBoatRevealed(computerAttack);
         } else {
           console.log("COMPUTER MISS");
         }
@@ -244,6 +250,7 @@ const Board = () => {
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[1] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
+          setHumanBoatRevealedTwo(computerAttack);
         } else {
           console.log("COMPUTER MISS");
         }
@@ -252,6 +259,7 @@ const Board = () => {
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[2] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
+          setHumanBoatRevealedThree(computerAttack);
         } else {
           console.log("COMPUTER MISS");
         }
@@ -260,6 +268,7 @@ const Board = () => {
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[3] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
+          setHumanBoatRevealedFour(computerAttack);
         } else {
           console.log("COMPUTER MISS");
         }
@@ -268,6 +277,7 @@ const Board = () => {
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[4] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
+          setHumanBoatRevealedFive(computerAttack);
         } else {
           console.log("COMPUTER MISS");
         }
@@ -315,6 +325,11 @@ const Board = () => {
     setHumanBoatThree(null);
     setHumanBoatFour(null);
     setHumanBoatFive(null);
+    setHumanBoatRevealed(null);
+    setHumanBoatRevealedTwo(null);
+    setHumanBoatRevealedThree(null);
+    setHumanBoatRevealedFour(null);
+    setHumanBoatRevealedFive(null);
     setHumanBoatActive(null);
     setHumanBoatTwoActive(null);
     setHumanBoatThreeActive(null);
@@ -400,6 +415,18 @@ const Board = () => {
                         : computerWin === true
                         ? "#EBDD2F"
                         : "",
+                    color:
+                      humanBoatRevealed === boatPosition
+                        ? "#eeeeee"
+                        : humanBoatRevealedTwo === boatPosition
+                        ? "#eeeeee"
+                        : humanBoatRevealedThree === boatPosition
+                        ? "#eeeeee"
+                        : humanBoatRevealedFour === boatPosition
+                        ? "#eeeeee"
+                        : humanBoatRevealedFive === boatPosition
+                        ? "#eeeeee"
+                        : "",
                   }}
                   value={boatPosition}
                   // Cannot click on human board if game is started
@@ -428,7 +455,9 @@ const Board = () => {
                       ? () => positionHumanBoatFive(boatPosition)
                       : null
                   }
-                ></Square>
+                >
+                  X{" "}
+                </Square>
               );
             })}
           </BoardContainer>
