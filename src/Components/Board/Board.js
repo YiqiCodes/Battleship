@@ -42,24 +42,13 @@ const Board = () => {
   ]);
 
   // Enemy Boat States
-  const [enemyBoat, setEnemyBoat] = useState();
-  const [enemyBoatTwo, setEnemyBoatTwo] = useState();
-  const [enemyBoatThree, setEnemyBoatThree] = useState();
-  const [enemyBoatFour, setEnemyBoatFour] = useState();
-  const [enemyBoatFive, setEnemyBoatFive] = useState();
-  const [enemyBoatRevealed, setEnemyBoatRevealed] = useState();
-  const [enemyBoatRevealedTwo, setEnemyBoatRevealedTwo] = useState();
-  const [enemyBoatRevealedThree, setEnemyBoatRevealedThree] = useState();
-  const [enemyBoatRevealedFour, setEnemyBoatRevealedFour] = useState();
-  const [enemyBoatRevealedFive, setEnemyBoatRevealedFive] = useState();
-  const [enemyBoatsHit, setEnemyBoatsHit] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
+  const [enemyBoats, setEnemyBoats] = useState([
+    { destroyer: { position: null, revealed: null, isHit: false } },
+    { submarine: { position: null, revealed: null, isHit: false } },
+    { cruiser: { position: null, revealed: null, isHit: false } },
+    { battleship: { position: null, revealed: null, isHit: false } },
+    { carrier: { position: null, revealed: null, isHit: false } },
   ]);
-
   const [attackPosition, setAttackPosition] = useState();
   const [squaresHumanAttacked, setSquaresHumanAttacked] = useState([]);
   const [squaresComputerAttacked, setSquaresComputerAttacked] = useState([]);
@@ -74,11 +63,8 @@ const Board = () => {
   let board = [];
   for (let i = 1; i <= 100; i++) board.push(i);
 
-  // NEED TO CHECK ALL BOATS ARE PLACED
-
   // Start the game && position Computer boat
   const startGame = () => {
-    console.log("TEST", humanBoat);
     if (
       humanBoat &&
       humanBoatTwo &&
@@ -142,17 +128,20 @@ const Board = () => {
   // Randomly places enemy boat
   const positionEnemyBoat = () => {
     // NEED TO ENSURE CANNOT BE PLACED ONTO EACH OTHER
+    const positionComputerDestroyer = Math.floor(Math.random() * 100) + 1;
+    const positionComputerBoatSubmarine = Math.floor(Math.random() * 100) + 1;
+    const positionComputerBoatCruiser = Math.floor(Math.random() * 100) + 1;
+    const positionComputerBoatBattleship = Math.floor(Math.random() * 100) + 1;
+    const positionComputerBoatCarrier = Math.floor(Math.random() * 100) + 1;
 
-    const positionComputerBoat = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatTwo = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatThree = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatFour = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatFive = Math.floor(Math.random() * 100) + 1;
-    setEnemyBoat(positionComputerBoat);
-    setEnemyBoatTwo(positionComputerBoatTwo);
-    setEnemyBoatThree(positionComputerBoatThree);
-    setEnemyBoatFour(positionComputerBoatFour);
-    setEnemyBoatFive(positionComputerBoatFive);
+    let enemyBoatPositions = [...enemyBoats];
+    enemyBoatPositions[0].destroyer.position = positionComputerDestroyer;
+    enemyBoatPositions[1].submarine.position = positionComputerBoatSubmarine;
+    enemyBoatPositions[2].cruiser.position = positionComputerBoatCruiser;
+    enemyBoatPositions[3].battleship.position = positionComputerBoatBattleship;
+    enemyBoatPositions[4].carrier.position = positionComputerBoatCarrier;
+
+    setEnemyBoats(enemyBoatPositions);
   };
 
   // Sets attack position & turns square red
@@ -169,62 +158,60 @@ const Board = () => {
     const humanTurn = () => {
       // Add to squares Human attacked
       setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
-      console.log("squares human attacked:", squaresHumanAttacked);
-      // Check if Human hit/win function
-      if (finalAttack === enemyBoat) {
-        console.log("HUMAN HIT!!");
-        setEnemyBoatRevealed(enemyBoat);
-        let updatedEnemyBoatsHit = [...enemyBoatsHit];
-        updatedEnemyBoatsHit[0] = true;
-        setEnemyBoatsHit(updatedEnemyBoatsHit);
+
+      // console.log("squares human attacked:", squaresHumanAttacked);
+      let enemyBoatsUpdated = [...enemyBoats];
+
+      // Check if Human hit
+      if (finalAttack === enemyBoats[0].destroyer.position) {
+        enemyBoatsUpdated[0].destroyer.revealed = finalAttack;
+        enemyBoatsUpdated[0].destroyer.isHit = true;
+        setEnemyBoats(enemyBoatsUpdated);
+        // console.log("HUMAN HIT!!");
       } else {
-        console.log("HUMAN MISS");
+        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === enemyBoatTwo) {
-        console.log("HUMAN HIT!!");
-        setEnemyBoatRevealedTwo(enemyBoatTwo);
-        let updatedEnemyBoatsHit = [...enemyBoatsHit];
-        updatedEnemyBoatsHit[1] = true;
-        setEnemyBoatsHit(updatedEnemyBoatsHit);
+      if (finalAttack === enemyBoats[1].submarine.position) {
+        enemyBoatsUpdated[1].submarine.revealed = finalAttack;
+        enemyBoatsUpdated[1].submarine.isHit = true;
+        setEnemyBoats(enemyBoatsUpdated);
+        // console.log("HUMAN HIT!!");
       } else {
-        console.log("HUMAN MISS");
+        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === enemyBoatThree) {
-        console.log("HUMAN HIT!!");
-        setEnemyBoatRevealedThree(enemyBoatThree);
-        let updatedEnemyBoatsHit = [...enemyBoatsHit];
-        updatedEnemyBoatsHit[2] = true;
-        setEnemyBoatsHit(updatedEnemyBoatsHit);
+      if (finalAttack === enemyBoats[2].cruiser.position) {
+        enemyBoatsUpdated[2].cruiser.revealed = finalAttack;
+        enemyBoatsUpdated[2].cruiser.isHit = true;
+        setEnemyBoats(enemyBoatsUpdated);
+        // console.log("HUMAN HIT!!");
       } else {
-        console.log("HUMAN MISS");
+        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === enemyBoatFour) {
-        console.log("HUMAN HIT!!");
-        setEnemyBoatRevealedFour(enemyBoatFour);
-        let updatedEnemyBoatsHit = [...enemyBoatsHit];
-        updatedEnemyBoatsHit[3] = true;
-        setEnemyBoatsHit(updatedEnemyBoatsHit);
+      if (finalAttack === enemyBoats[3].battleship.position) {
+        enemyBoatsUpdated[3].battleship.revealed = finalAttack;
+        enemyBoatsUpdated[3].battleship.isHit = true;
+        setEnemyBoats(enemyBoatsUpdated);
+        // console.log("HUMAN HIT!!");
       } else {
-        console.log("HUMAN MISS");
+        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === enemyBoatFive) {
-        console.log("HUMAN HIT!!");
-        setEnemyBoatRevealedFive(enemyBoatFive);
-        let updatedEnemyBoatsHit = [...enemyBoatsHit];
-        updatedEnemyBoatsHit[4] = true;
-        setEnemyBoatsHit(updatedEnemyBoatsHit);
+      if (finalAttack === enemyBoats[4].carrier.position) {
+        enemyBoatsUpdated[4].carrier.revealed = finalAttack;
+        enemyBoatsUpdated[4].carrier.isHit = true;
+        setEnemyBoats(enemyBoatsUpdated);
+        // console.log("HUMAN HIT!!");
       } else {
-        console.log("HUMAN MISS");
+        // console.log("HUMAN MISS");
       }
     };
 
     const computerTurn = () => {
       // AI guess function
-      const computerAttack = Math.floor(Math.random() * 10) + 1;
+      const computerAttack = Math.floor(Math.random() * 100) + 1;
       // Cannot guess the same square
       if (squaresComputerAttacked.includes(computerAttack)) {
         computerTurn();
@@ -234,52 +221,52 @@ const Board = () => {
           ...squaresComputerAttacked,
           computerAttack,
         ]);
-        console.log("squares computer attacked:", squaresComputerAttacked);
+        // console.log("squares computer attacked:", squaresComputerAttacked);
         // Check if Computer hit/win function
         if (computerAttack === humanBoat) {
-          console.log("COMPUTER HIT!!");
+          // console.log("COMPUTER HIT!!");
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[0] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
           setHumanBoatRevealed(computerAttack);
         } else {
-          console.log("COMPUTER MISS");
+          // console.log("COMPUTER MISS");
         }
         if (computerAttack === humanBoatTwo) {
-          console.log("COMPUTER HIT!!");
+          // console.log("COMPUTER HIT!!");
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[1] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
           setHumanBoatRevealedTwo(computerAttack);
         } else {
-          console.log("COMPUTER MISS");
+          // console.log("COMPUTER MISS");
         }
         if (computerAttack === humanBoatThree) {
-          console.log("COMPUTER HIT!!");
+          // console.log("COMPUTER HIT!!");
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[2] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
           setHumanBoatRevealedThree(computerAttack);
         } else {
-          console.log("COMPUTER MISS");
+          // console.log("COMPUTER MISS");
         }
         if (computerAttack === humanBoatFour) {
-          console.log("COMPUTER HIT!!");
+          // console.log("COMPUTER HIT!!");
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[3] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
           setHumanBoatRevealedFour(computerAttack);
         } else {
-          console.log("COMPUTER MISS");
+          // console.log("COMPUTER MISS");
         }
         if (computerAttack === humanBoatFive) {
-          console.log("COMPUTER HIT!!");
+          // console.log("COMPUTER HIT!!");
           let updatedHumanBoatsHit = [...humanBoatsHit];
           updatedHumanBoatsHit[4] = true;
           setHumanBoatsHit(updatedHumanBoatsHit);
           setHumanBoatRevealedFive(computerAttack);
         } else {
-          console.log("COMPUTER MISS");
+          // console.log("COMPUTER MISS");
         }
       }
     };
@@ -294,13 +281,13 @@ const Board = () => {
   // Conditions for Human to Win
   const checkHumanWin = () => {
     if (
-      enemyBoatsHit[0] === true &&
-      enemyBoatsHit[1] === true &&
-      enemyBoatsHit[2] === true &&
-      enemyBoatsHit[3] === true &&
-      enemyBoatsHit[4] === true
+      enemyBoats[0].destroyer.isHit === true &&
+      enemyBoats[1].submarine.isHit === true &&
+      enemyBoats[2].cruiser.isHit === true &&
+      enemyBoats[3].battleship.isHit === true &&
+      enemyBoats[4].carrier.isHit === true
     ) {
-      console.log("YOU WIN");
+      // console.log("YOU WIN");
       setHumanWin(true);
     }
   };
@@ -314,7 +301,7 @@ const Board = () => {
       humanBoatsHit[3] === true &&
       humanBoatsHit[4] === true
     ) {
-      console.log("COMPUTER WIN");
+      // console.log("COMPUTER WIN");
       setComputerWin(true);
     }
   };
@@ -336,17 +323,14 @@ const Board = () => {
     setHumanBoatFourActive(null);
     setHumanBoatFiveActive(null);
     setHumanBoatsHit([false, false, false, false, false]);
-    setEnemyBoat(null);
-    setEnemyBoatTwo(null);
-    setEnemyBoatThree(null);
-    setEnemyBoatFour(null);
-    setEnemyBoatFive(null);
-    setEnemyBoatRevealed(null);
-    setEnemyBoatRevealedTwo(null);
-    setEnemyBoatRevealedThree(null);
-    setEnemyBoatRevealedFour(null);
-    setEnemyBoatRevealedFive(null);
-    setEnemyBoatsHit([false, false, false, false, false]);
+    setEnemyBoats([
+      { destroyer: { position: null, revealed: null, isHit: false } },
+      { submarine: { position: null, revealed: null, isHit: false } },
+      { cruiser: { position: null, revealed: null, isHit: false } },
+      { battleship: { position: null, revealed: null, isHit: false } },
+      { carrier: { position: null, revealed: null, isHit: false } },
+    ]);
+
     setAttackPosition(null);
     setSquaresHumanAttacked([null]);
     setSquaresComputerAttacked([null]);
@@ -356,31 +340,31 @@ const Board = () => {
   };
 
   console.log("is game started??", started);
-  console.log("computer boat position", enemyBoat);
-  console.log("computer boat 2 position", enemyBoatTwo);
-  console.log("computer boat 3 position", enemyBoatThree);
-  console.log("computer boat 4 position", enemyBoatFour);
-  console.log("computer boat 5 position", enemyBoatFive);
+  console.log("computer boat position", enemyBoats[0].destroyer.position);
+  console.log("computer boat 2 position", enemyBoats[1].submarine.position);
+  console.log("computer boat 3 position", enemyBoats[2].cruiser.position);
+  console.log("computer boat 4 position", enemyBoats[3].battleship.position);
+  console.log("computer boat 5 position", enemyBoats[4].carrier.position);
   // console.log("human boat position", humanBoat);
   // console.log("enemy boat sunk?", enemyBoatsHit);
-  console.log(
-    "active?",
-    humanBoatActive,
-    humanBoatTwoActive,
-    humanBoatThreeActive,
-    humanBoatFourActive,
-    humanBoatFiveActive
-  );
-  console.log(
-    "human boats",
-    humanBoat,
-    humanBoatTwo,
-    humanBoatThree,
-    humanBoatFour,
-    humanBoatFive
-  );
+  // console.log(
+  //   "active?",
+  //   humanBoatActive,
+  //   humanBoatTwoActive,
+  //   humanBoatThreeActive,
+  //   humanBoatFourActive,
+  //   humanBoatFiveActive
+  // );
+  // console.log(
+  //   "human boats",
+  //   humanBoat,
+  //   humanBoatTwo,
+  //   humanBoatThree,
+  //   humanBoatFour,
+  //   humanBoatFive
+  // );
 
-  console.log("boats hit:", humanBoatsHit);
+  // console.log("boats hit:", humanBoatsHit);
   return (
     <>
       <BoardOutterContainer>
@@ -442,7 +426,6 @@ const Board = () => {
           <BoardContainer>
             {board.map((boatPosition) => {
               return (
-                // NEED TO SHOW IF YOUR BOAT IS HIT
                 <Square
                   style={{
                     background:
@@ -526,15 +509,20 @@ const Board = () => {
                     background:
                       attackPosition === computerBoatPosition
                         ? "red"
-                        : enemyBoatRevealed === computerBoatPosition
+                        : enemyBoats[0].destroyer.revealed ===
+                          computerBoatPosition
                         ? "#111111"
-                        : enemyBoatRevealedTwo === computerBoatPosition
+                        : enemyBoats[1].submarine.revealed ===
+                          computerBoatPosition
                         ? "#111111"
-                        : enemyBoatRevealedThree === computerBoatPosition
+                        : enemyBoats[2].cruiser.revealed ===
+                          computerBoatPosition
                         ? "#111111"
-                        : enemyBoatRevealedFour === computerBoatPosition
+                        : enemyBoats[3].battleship.revealed ===
+                          computerBoatPosition
                         ? "#111111"
-                        : enemyBoatRevealedFive === computerBoatPosition
+                        : enemyBoats[4].carrier.revealed ===
+                          computerBoatPosition
                         ? "#111111"
                         : squaresHumanAttacked.includes(computerBoatPosition)
                         ? "#FF9387"
@@ -542,15 +530,19 @@ const Board = () => {
                         ? "#FDFFBA"
                         : "",
                     color:
-                      enemyBoatRevealed === computerBoatPosition
+                      enemyBoats[0].destroyer.revealed === computerBoatPosition
                         ? "#eeeeee"
-                        : enemyBoatRevealedTwo === computerBoatPosition
+                        : enemyBoats[1].submarine.revealed ===
+                          computerBoatPosition
                         ? "#eeeeee"
-                        : enemyBoatRevealedThree === computerBoatPosition
+                        : enemyBoats[2].cruiser.revealed ===
+                          computerBoatPosition
                         ? "#eeeeee"
-                        : enemyBoatRevealedFour === computerBoatPosition
+                        : enemyBoats[3].battleship.revealed ===
+                          computerBoatPosition
                         ? "#eeeeee"
-                        : enemyBoatRevealedFive === computerBoatPosition
+                        : enemyBoats[4].carrier.revealed ===
+                          computerBoatPosition
                         ? "#eeeeee"
                         : "",
                   }}
