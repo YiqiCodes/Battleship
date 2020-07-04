@@ -178,8 +178,7 @@ const Board = () => {
 
   // Randomly places computer boat
   const positionComputerBoat = () => {
-    // NEED TO ENSURE CANNOT BE PLACED ONTO EACH OTHER
-    // TOTAL POSITIONS ARRAY, TO BE CHECKED BEFORE ANYTHING IS INSERTED - NO DUPLICATES
+    let computerBoatPositions = [...computerBoats];
     let positionComputerDestroyer = [null, null];
     let positionComputerSubmarine = [null, null];
     let positionComputerCruiser = [null, null, null];
@@ -513,39 +512,57 @@ const Board = () => {
     positionComputerBattleshipAlgorithm();
     positionComputerCarrierAlgorithm();
 
-    let computerBoatPositions = [...computerBoats];
-    computerBoatPositions[0].destroyer.position = [
-      positionComputerDestroyer[0],
-      positionComputerDestroyer[1],
-    ];
+    // Check if there are duplicates in the positioning of computer boats
+    const checkDuplicates = () => {
+      let duplicate = false;
+      let duplicateChecker = positionComputerDestroyer.concat(
+        positionComputerSubmarine,
+        positionComputerCruiser,
+        positionComputerBattleship,
+        positionComputerCarrier
+      );
 
-    computerBoatPositions[1].submarine.position = [
-      positionComputerSubmarine[0],
-      positionComputerSubmarine[1],
-    ];
+      duplicateChecker.sort((a, b) => a - b);
 
-    computerBoatPositions[2].cruiser.position = [
-      positionComputerCruiser[0],
-      positionComputerCruiser[1],
-      positionComputerCruiser[2],
-    ];
+      for (let i = 0; i < duplicateChecker.length - 1; i++) {
+        if (duplicateChecker[i + 1] === duplicateChecker[i]) duplicate = true;
+      }
 
-    computerBoatPositions[3].battleship.position = [
-      positionComputerBattleship[0],
-      positionComputerBattleship[1],
-      positionComputerBattleship[2],
-      positionComputerBattleship[3],
-    ];
-
-    computerBoatPositions[4].carrier.position = [
-      positionComputerCarrier[0],
-      positionComputerCarrier[1],
-      positionComputerCarrier[2],
-      positionComputerCarrier[3],
-      positionComputerCarrier[4],
-    ];
-    console.log(computerBoatPositions);
-    setComputerBoats(computerBoatPositions);
+      if (duplicate === true) {
+        // Randomize boats again if there are duplicates
+        positionComputerBoat();
+      } else {
+        // Set position of computer boats if no duplicates
+        computerBoatPositions[0].destroyer.position = [
+          positionComputerDestroyer[0],
+          positionComputerDestroyer[1],
+        ];
+        computerBoatPositions[1].submarine.position = [
+          positionComputerSubmarine[0],
+          positionComputerSubmarine[1],
+        ];
+        computerBoatPositions[2].cruiser.position = [
+          positionComputerCruiser[0],
+          positionComputerCruiser[1],
+          positionComputerCruiser[2],
+        ];
+        computerBoatPositions[3].battleship.position = [
+          positionComputerBattleship[0],
+          positionComputerBattleship[1],
+          positionComputerBattleship[2],
+          positionComputerBattleship[3],
+        ];
+        computerBoatPositions[4].carrier.position = [
+          positionComputerCarrier[0],
+          positionComputerCarrier[1],
+          positionComputerCarrier[2],
+          positionComputerCarrier[3],
+          positionComputerCarrier[4],
+        ];
+        setComputerBoats(computerBoatPositions);
+      }
+    };
+    checkDuplicates();
   };
 
   // Sets attack position & turns square red
