@@ -52,40 +52,40 @@ const Board = () => {
     {
       destroyer: {
         position: [null, null],
-        revealed: null,
-        isHit: [null, null],
+        revealed: [null, null],
+        isHit: [false, false],
         isSunk: false,
       },
     },
     {
       submarine: {
         position: [null, null],
-        revealed: null,
-        isHit: false,
+        revealed: [null, null],
+        isHit: [false, false],
         isSunk: false,
       },
     },
     {
       cruiser: {
         position: [null, null, null],
-        revealed: null,
-        isHit: false,
+        revealed: [null, null, null],
+        isHit: [false, false, false],
         isSunk: false,
       },
     },
     {
       battleship: {
         position: [null, null, null, null],
-        revealed: null,
-        isHit: false,
+        revealed: [null, null, null, null],
+        isHit: [false, false, false, false],
         isSunk: false,
       },
     },
     {
       carrier: {
         position: [null, null, null, null, null],
-        revealed: null,
-        isHit: false,
+        revealed: [null, null, null, null, null],
+        isHit: [false, false, false, false, false],
         isSunk: false,
       },
     },
@@ -107,7 +107,6 @@ const Board = () => {
 
   // Start the game && position Computer boat
   const startGame = () => {
-    positionComputerBoat();
     if (
       humanBoats[0].destroyer.position &&
       humanBoats[1].submarine.position &&
@@ -280,6 +279,10 @@ const Board = () => {
             positionComputerCruiser[1] = positionComputerCruiserGenerator + 1;
             positionComputerCruiser[2] = positionComputerCruiserGenerator - 1;
           }
+          if (positionComputerCruiserGenerator.toString()[1] === "0") {
+            positionComputerCruiser[1] = positionComputerCruiserGenerator - 1;
+            positionComputerCruiser[2] = positionComputerCruiserGenerator - 2;
+          }
         }
         if (positionComputerCruiserGenerator <= 10) {
           if (positionComputerCruiserGenerator === 9) {
@@ -366,6 +369,14 @@ const Board = () => {
               positionComputerBattleshipGenerator - 1;
             positionComputerBattleship[3] =
               positionComputerBattleshipGenerator - 2;
+          }
+          if (positionComputerBattleshipGenerator.toString()[1] === "0") {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator - 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator - 2;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 3;
           }
         }
         if (positionComputerBattleshipGenerator <= 10) {
@@ -473,6 +484,12 @@ const Board = () => {
             positionComputerCarrier[3] = positionComputerCarrierGenerator - 2;
             positionComputerCarrier[4] = positionComputerCarrierGenerator - 3;
           }
+          if (positionComputerCarrierGenerator.toString()[1] === "0") {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator - 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 3;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 4;
+          }
         }
         if (positionComputerCarrierGenerator <= 10) {
           if (positionComputerCarrierGenerator === 7) {
@@ -579,53 +596,180 @@ const Board = () => {
       // Add to squares Human attacked
       setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
 
-      // console.log("squares human attacked:", squaresHumanAttacked);
       let computerBoatsUpdated = [...computerBoats];
 
       // Check if Human hit
-      if (finalAttack === computerBoats[0].destroyer.position) {
-        computerBoatsUpdated[0].destroyer.revealed = finalAttack;
-        computerBoatsUpdated[0].destroyer.isHit = true;
+      if (finalAttack === computerBoats[0].destroyer.position[0]) {
+        computerBoatsUpdated[0].destroyer.revealed[0] = finalAttack;
+        computerBoatsUpdated[0].destroyer.isHit[0] = true;
+        if (computerBoatsUpdated[0].destroyer.isHit[1] === true)
+          computerBoatsUpdated[0].destroyer.isSunk = true;
         setComputerBoats(computerBoatsUpdated);
-        // console.log("HUMAN HIT!!");
-      } else {
-        // console.log("HUMAN MISS");
+      }
+      if (finalAttack === computerBoats[0].destroyer.position[1]) {
+        computerBoatsUpdated[0].destroyer.revealed[1] = finalAttack;
+        computerBoatsUpdated[0].destroyer.isHit[1] = true;
+        if (computerBoatsUpdated[0].destroyer.isHit[0] === true)
+          computerBoatsUpdated[0].destroyer.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
       }
 
-      if (finalAttack === computerBoats[1].submarine.position) {
-        computerBoatsUpdated[1].submarine.revealed = finalAttack;
-        computerBoatsUpdated[1].submarine.isHit = true;
+      if (finalAttack === computerBoats[1].submarine.position[0]) {
+        computerBoatsUpdated[1].submarine.revealed[0] = finalAttack;
+        computerBoatsUpdated[1].submarine.isHit[0] = true;
+        if (computerBoatsUpdated[1].submarine.isHit[1] === true)
+          computerBoatsUpdated[1].submarine.isSunk = true;
         setComputerBoats(computerBoatsUpdated);
-        // console.log("HUMAN HIT!!");
-      } else {
-        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === computerBoats[2].cruiser.position) {
-        computerBoatsUpdated[2].cruiser.revealed = finalAttack;
-        computerBoatsUpdated[2].cruiser.isHit = true;
+      if (finalAttack === computerBoats[1].submarine.position[1]) {
+        computerBoatsUpdated[1].submarine.revealed[1] = finalAttack;
+        computerBoatsUpdated[1].submarine.isHit[1] = true;
+        if (computerBoatsUpdated[1].submarine.isHit[0] === true)
+          computerBoatsUpdated[1].submarine.isSunk = true;
         setComputerBoats(computerBoatsUpdated);
-        // console.log("HUMAN HIT!!");
-      } else {
-        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === computerBoats[3].battleship.position) {
-        computerBoatsUpdated[3].battleship.revealed = finalAttack;
-        computerBoatsUpdated[3].battleship.isHit = true;
+      if (finalAttack === computerBoats[2].cruiser.position[0]) {
+        computerBoatsUpdated[2].cruiser.revealed[0] = finalAttack;
+        computerBoatsUpdated[2].cruiser.isHit[0] = true;
+        if (
+          computerBoatsUpdated[2].cruiser.isHit[1] === true &&
+          computerBoatsUpdated[2].cruiser.isHit[2] === true
+        )
+          computerBoatsUpdated[2].cruiser.isSunk = true;
         setComputerBoats(computerBoatsUpdated);
-        // console.log("HUMAN HIT!!");
-      } else {
-        // console.log("HUMAN MISS");
       }
 
-      if (finalAttack === computerBoats[4].carrier.position) {
-        computerBoatsUpdated[4].carrier.revealed = finalAttack;
-        computerBoatsUpdated[4].carrier.isHit = true;
+      if (finalAttack === computerBoats[2].cruiser.position[1]) {
+        computerBoatsUpdated[2].cruiser.revealed[1] = finalAttack;
+        computerBoatsUpdated[2].cruiser.isHit[1] = true;
+        if (
+          computerBoatsUpdated[2].cruiser.isHit[0] === true &&
+          computerBoatsUpdated[2].cruiser.isHit[2] === true
+        )
+          computerBoatsUpdated[2].cruiser.isSunk = true;
         setComputerBoats(computerBoatsUpdated);
-        // console.log("HUMAN HIT!!");
-      } else {
-        // console.log("HUMAN MISS");
+      }
+
+      if (finalAttack === computerBoats[2].cruiser.position[2]) {
+        computerBoatsUpdated[2].cruiser.revealed[2] = finalAttack;
+        computerBoatsUpdated[2].cruiser.isHit[2] = true;
+        if (
+          computerBoatsUpdated[2].cruiser.isHit[1] === true &&
+          computerBoatsUpdated[2].cruiser.isHit[2] === true
+        )
+          computerBoatsUpdated[2].cruiser.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+
+      if (finalAttack === computerBoats[3].battleship.position[0]) {
+        computerBoatsUpdated[3].battleship.revealed[0] = finalAttack;
+        computerBoatsUpdated[3].battleship.isHit[0] = true;
+        if (
+          computerBoatsUpdated[3].battleship.isHit[1] === true &&
+          computerBoatsUpdated[3].battleship.isHit[2] === true &&
+          computerBoatsUpdated[3].battleship.isHit[3] === true
+        )
+          computerBoatsUpdated[3].battleship.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+
+      if (finalAttack === computerBoats[3].battleship.position[1]) {
+        computerBoatsUpdated[3].battleship.revealed[1] = finalAttack;
+        computerBoatsUpdated[3].battleship.isHit[1] = true;
+        if (
+          computerBoatsUpdated[3].battleship.isHit[0] === true &&
+          computerBoatsUpdated[3].battleship.isHit[2] === true &&
+          computerBoatsUpdated[3].battleship.isHit[3] === true
+        )
+          computerBoatsUpdated[3].battleship.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+
+      if (finalAttack === computerBoats[3].battleship.position[2]) {
+        computerBoatsUpdated[3].battleship.revealed[2] = finalAttack;
+        computerBoatsUpdated[3].battleship.isHit[2] = true;
+        if (
+          computerBoatsUpdated[3].battleship.isHit[0] === true &&
+          computerBoatsUpdated[3].battleship.isHit[1] === true &&
+          computerBoatsUpdated[3].battleship.isHit[3] === true
+        )
+          computerBoatsUpdated[3].battleship.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+
+      if (finalAttack === computerBoats[3].battleship.position[3]) {
+        computerBoatsUpdated[3].battleship.revealed[3] = finalAttack;
+        computerBoatsUpdated[3].battleship.isHit[3] = true;
+        if (
+          computerBoatsUpdated[3].battleship.isHit[0] === true &&
+          computerBoatsUpdated[3].battleship.isHit[1] === true &&
+          computerBoatsUpdated[3].battleship.isHit[2] === true
+        )
+          computerBoatsUpdated[3].battleship.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+
+      if (finalAttack === computerBoats[4].carrier.position[0]) {
+        computerBoatsUpdated[4].carrier.revealed[0] = finalAttack;
+        computerBoatsUpdated[4].carrier.isHit[0] = true;
+        if (
+          computerBoatsUpdated[4].carrier.isHit[1] === true &&
+          computerBoatsUpdated[4].carrier.isHit[2] === true &&
+          computerBoatsUpdated[4].carrier.isHit[3] === true &&
+          computerBoatsUpdated[4].carrier.isHit[4] === true
+        )
+          computerBoatsUpdated[4].carrier.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+      if (finalAttack === computerBoats[4].carrier.position[1]) {
+        computerBoatsUpdated[4].carrier.revealed[1] = finalAttack;
+        computerBoatsUpdated[4].carrier.isHit[1] = true;
+        if (
+          computerBoatsUpdated[4].carrier.isHit[0] === true &&
+          computerBoatsUpdated[4].carrier.isHit[2] === true &&
+          computerBoatsUpdated[4].carrier.isHit[3] === true &&
+          computerBoatsUpdated[4].carrier.isHit[4] === true
+        )
+          computerBoatsUpdated[4].carrier.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+      if (finalAttack === computerBoats[4].carrier.position[2]) {
+        computerBoatsUpdated[4].carrier.revealed[2] = finalAttack;
+        computerBoatsUpdated[4].carrier.isHit[2] = true;
+        if (
+          computerBoatsUpdated[4].carrier.isHit[0] === true &&
+          computerBoatsUpdated[4].carrier.isHit[1] === true &&
+          computerBoatsUpdated[4].carrier.isHit[3] === true &&
+          computerBoatsUpdated[4].carrier.isHit[4] === true
+        )
+          computerBoatsUpdated[4].carrier.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+      if (finalAttack === computerBoats[4].carrier.position[3]) {
+        computerBoatsUpdated[4].carrier.revealed[3] = finalAttack;
+        computerBoatsUpdated[4].carrier.isHit[3] = true;
+        if (
+          computerBoatsUpdated[4].carrier.isHit[0] === true &&
+          computerBoatsUpdated[4].carrier.isHit[1] === true &&
+          computerBoatsUpdated[4].carrier.isHit[2] === true &&
+          computerBoatsUpdated[4].carrier.isHit[4] === true
+        )
+          computerBoatsUpdated[4].carrier.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
+      }
+      if (finalAttack === computerBoats[4].carrier.position[4]) {
+        computerBoatsUpdated[4].carrier.revealed[4] = finalAttack;
+        computerBoatsUpdated[4].carrier.isHit[4] = true;
+        if (
+          computerBoatsUpdated[4].carrier.isHit[0] === true &&
+          computerBoatsUpdated[4].carrier.isHit[1] === true &&
+          computerBoatsUpdated[4].carrier.isHit[2] === true &&
+          computerBoatsUpdated[4].carrier.isHit[3] === true
+        )
+          computerBoatsUpdated[4].carrier.isSunk = true;
+        setComputerBoats(computerBoatsUpdated);
       }
     };
 
@@ -696,13 +840,12 @@ const Board = () => {
   // Conditions for Human to Win
   const checkHumanWin = () => {
     if (
-      computerBoats[0].destroyer.isHit === true &&
-      computerBoats[1].submarine.isHit === true &&
-      computerBoats[2].cruiser.isHit === true &&
-      computerBoats[3].battleship.isHit === true &&
-      computerBoats[4].carrier.isHit === true
+      computerBoats[0].destroyer.isSunk === true &&
+      computerBoats[1].submarine.isSunk === true &&
+      computerBoats[2].cruiser.isSunk === true &&
+      computerBoats[3].battleship.isSunk === true &&
+      computerBoats[4].carrier.isSunk === true
     ) {
-      // console.log("YOU WIN");
       setHumanWin(true);
     }
   };
@@ -783,10 +926,11 @@ const Board = () => {
   // console.log("is game started??", started);
   // console.log("human boats:", humanBoats);
   console.log("computer boat position", computerBoats[0].destroyer.position);
-  console.log("computer boat 2 position", computerBoats[1].submarine.position);
-  console.log("computer boat 3 position", computerBoats[2].cruiser.position);
-  console.log("computer boat 4 position", computerBoats[3].battleship.position);
-  console.log("computer boat 5 position", computerBoats[4].carrier.position);
+  // console.log("computer boat 2 position", computerBoats[1].submarine.position);
+  // console.log("computer boat 3 position", computerBoats[2].cruiser.position);
+  // console.log("computer boat 4 position", computerBoats[3].battleship.position);
+  // console.log("computer boat 5 position", computerBoats[4].carrier.position);
+  console.log("computer boat hit", computerBoats);
   // console.log("human boat position", humanBoat);
   // console.log("computer boat sunk?", computerBoatsHit);
   // console.log("boats hit:", humanBoatsHit);
@@ -795,7 +939,7 @@ const Board = () => {
     <>
       <BoardOutterContainer>
         {/* Place Ship Buttons */}
-        <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
+        {/* <StartGameButton onClick={() => startGame()}>Start</StartGameButton> */}
         <ButtonsContainer>
           {!started ? (
             <>
@@ -939,19 +1083,52 @@ const Board = () => {
                     background:
                       attackPosition === computerBoatPosition
                         ? "red"
-                        : computerBoats[0].destroyer.revealed ===
+                        : computerBoats[0].destroyer.revealed[0] ===
                           computerBoatPosition
                         ? "#111111"
-                        : computerBoats[1].submarine.revealed ===
+                        : computerBoats[0].destroyer.revealed[1] ===
                           computerBoatPosition
                         ? "#111111"
-                        : computerBoats[2].cruiser.revealed ===
+                        : computerBoats[1].submarine.revealed[0] ===
                           computerBoatPosition
                         ? "#111111"
-                        : computerBoats[3].battleship.revealed ===
+                        : computerBoats[1].submarine.revealed[1] ===
                           computerBoatPosition
                         ? "#111111"
-                        : computerBoats[4].carrier.revealed ===
+                        : computerBoats[2].cruiser.revealed[0] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[2].cruiser.revealed[1] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[2].cruiser.revealed[2] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[3].battleship.revealed[0] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[3].battleship.revealed[1] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[3].battleship.revealed[2] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[3].battleship.revealed[3] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[4].carrier.revealed[0] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[4].carrier.revealed[1] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[4].carrier.revealed[2] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[4].carrier.revealed[3] ===
+                          computerBoatPosition
+                        ? "#111111"
+                        : computerBoats[4].carrier.revealed[4] ===
                           computerBoatPosition
                         ? "#111111"
                         : squaresHumanAttacked.includes(computerBoatPosition)
@@ -960,19 +1137,52 @@ const Board = () => {
                         ? "#FDFFBA"
                         : "",
                     color:
-                      computerBoats[0].destroyer.revealed ===
+                      computerBoats[0].destroyer.revealed[0] ===
                       computerBoatPosition
                         ? "#eeeeee"
-                        : computerBoats[1].submarine.revealed ===
+                        : computerBoats[0].destroyer.revealed[1] ===
                           computerBoatPosition
                         ? "#eeeeee"
-                        : computerBoats[2].cruiser.revealed ===
+                        : computerBoats[1].submarine.revealed[0] ===
                           computerBoatPosition
                         ? "#eeeeee"
-                        : computerBoats[3].battleship.revealed ===
+                        : computerBoats[1].submarine.revealed[1] ===
                           computerBoatPosition
                         ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed ===
+                        : computerBoats[2].cruiser.revealed[0] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[2].cruiser.revealed[1] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[2].cruiser.revealed[2] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[3].battleship.revealed[0] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[3].battleship.revealed[1] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[3].battleship.revealed[2] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[3].battleship.revealed[3] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[4].carrier.revealed[0] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[4].carrier.revealed[1] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[4].carrier.revealed[2] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[4].carrier.revealed[3] ===
+                          computerBoatPosition
+                        ? "#eeeeee"
+                        : computerBoats[4].carrier.revealed[4] ===
                           computerBoatPosition
                         ? "#eeeeee"
                         : "",
