@@ -49,11 +49,46 @@ const Board = () => {
     },
   ]);
   const [computerBoats, setComputerBoats] = useState([
-    { destroyer: { position: null, revealed: null, isHit: false } },
-    { submarine: { position: null, revealed: null, isHit: false } },
-    { cruiser: { position: null, revealed: null, isHit: false } },
-    { battleship: { position: null, revealed: null, isHit: false } },
-    { carrier: { position: null, revealed: null, isHit: false } },
+    {
+      destroyer: {
+        position: [null, null],
+        revealed: null,
+        isHit: [null, null],
+        isSunk: false,
+      },
+    },
+    {
+      submarine: {
+        position: [null, null],
+        revealed: null,
+        isHit: false,
+        isSunk: false,
+      },
+    },
+    {
+      cruiser: {
+        position: [null, null, null],
+        revealed: null,
+        isHit: false,
+        isSunk: false,
+      },
+    },
+    {
+      battleship: {
+        position: [null, null, null, null],
+        revealed: null,
+        isHit: false,
+        isSunk: false,
+      },
+    },
+    {
+      carrier: {
+        position: [null, null, null, null, null],
+        revealed: null,
+        isHit: false,
+        isSunk: false,
+      },
+    },
   ]);
   const [attackPosition, setAttackPosition] = useState();
   const [squaresHumanAttacked, setSquaresHumanAttacked] = useState([]);
@@ -72,6 +107,7 @@ const Board = () => {
 
   // Start the game && position Computer boat
   const startGame = () => {
+    positionComputerBoat();
     if (
       humanBoats[0].destroyer.position &&
       humanBoats[1].submarine.position &&
@@ -143,19 +179,372 @@ const Board = () => {
   // Randomly places computer boat
   const positionComputerBoat = () => {
     // NEED TO ENSURE CANNOT BE PLACED ONTO EACH OTHER
-    const positionComputerDestroyer = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatSubmarine = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatCruiser = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatBattleship = Math.floor(Math.random() * 100) + 1;
-    const positionComputerBoatCarrier = Math.floor(Math.random() * 100) + 1;
+    // TOTAL POSITIONS ARRAY, TO BE CHECKED BEFORE ANYTHING IS INSERTED - NO DUPLICATES
+    let positionComputerDestroyer = [null, null];
+    let positionComputerSubmarine = [null, null];
+    let positionComputerCruiser = [null, null, null];
+    let positionComputerBattleship = [null, null, null, null];
+    let positionComputerCarrier = [null, null, null, null, null];
+
+    const positionComputerDestroyerAlgorithm = () => {
+      const positionComputerDestroyerGenerator =
+        Math.floor(Math.random() * 100) + 1;
+      positionComputerDestroyer[0] = positionComputerDestroyerGenerator;
+      const horizontalOrVertical = Math.floor(Math.random() * 2) + 1;
+      if (horizontalOrVertical === 1) {
+        if (positionComputerDestroyerGenerator <= 90) {
+          positionComputerDestroyer[1] =
+            positionComputerDestroyerGenerator + 10;
+        } else {
+          positionComputerDestroyer[1] =
+            positionComputerDestroyerGenerator - 10;
+        }
+      }
+      if (horizontalOrVertical === 2) {
+        positionComputerDestroyer[1] = positionComputerDestroyerGenerator + 1;
+        if (positionComputerDestroyerGenerator > 10) {
+          if (positionComputerDestroyerGenerator.toString()[1] === "0") {
+            positionComputerDestroyer[1] =
+              positionComputerDestroyerGenerator - 1;
+          }
+        }
+        if (positionComputerDestroyerGenerator === 10) {
+          positionComputerDestroyer = [10, 9];
+        }
+        if (positionComputerDestroyerGenerator === 100) {
+          positionComputerDestroyer = [100, 99];
+        }
+      }
+    };
+
+    const positionComputerSubmarineAlgorithm = () => {
+      const positionComputerSubmarineGenerator =
+        Math.floor(Math.random() * 100) + 1;
+      positionComputerSubmarine[0] = positionComputerSubmarineGenerator;
+      const horizontalOrVertical = Math.floor(Math.random() * 2) + 1;
+      if (horizontalOrVertical === 1) {
+        if (positionComputerSubmarineGenerator <= 90) {
+          positionComputerSubmarine[1] =
+            positionComputerSubmarineGenerator + 10;
+        } else {
+          positionComputerSubmarine[1] =
+            positionComputerSubmarineGenerator - 10;
+        }
+      }
+      if (horizontalOrVertical === 2) {
+        positionComputerSubmarine[1] = positionComputerSubmarineGenerator + 1;
+        if (positionComputerSubmarineGenerator > 10) {
+          if (positionComputerSubmarineGenerator.toString()[1] === "0") {
+            positionComputerSubmarine[1] =
+              positionComputerSubmarineGenerator - 1;
+          }
+        }
+        if (positionComputerSubmarineGenerator === 10) {
+          positionComputerSubmarine = [10, 9];
+        }
+        if (positionComputerSubmarineGenerator === 100) {
+          positionComputerSubmarine = [100, 99];
+        }
+      }
+    };
+
+    const positionComputerCruiserAlgorithm = () => {
+      const positionComputerCruiserGenerator =
+        Math.floor(Math.random() * 100) + 1;
+      positionComputerCruiser[0] = positionComputerCruiserGenerator;
+      const horizontalOrVertical = Math.floor(Math.random() * 2) + 1;
+      if (horizontalOrVertical === 1) {
+        if (positionComputerCruiserGenerator <= 80) {
+          positionComputerCruiser[1] = positionComputerCruiserGenerator + 10;
+          positionComputerCruiser[2] = positionComputerCruiserGenerator + 20;
+        }
+        if (
+          positionComputerCruiserGenerator > 80 &&
+          positionComputerCruiserGenerator <= 90
+        ) {
+          positionComputerCruiser[1] = positionComputerCruiserGenerator + 10;
+          positionComputerCruiser[2] = positionComputerCruiserGenerator - 10;
+        }
+        if (
+          positionComputerCruiserGenerator > 90 &&
+          positionComputerCruiserGenerator <= 100
+        ) {
+          positionComputerCruiser[1] = positionComputerCruiserGenerator - 10;
+          positionComputerCruiser[2] = positionComputerCruiserGenerator - 20;
+        }
+      }
+      if (horizontalOrVertical === 2) {
+        positionComputerCruiser[1] = positionComputerCruiserGenerator + 1;
+        positionComputerCruiser[2] = positionComputerCruiserGenerator + 2;
+        if (positionComputerCruiserGenerator > 10) {
+          if (positionComputerCruiserGenerator.toString()[1] === "9") {
+            positionComputerCruiser[1] = positionComputerCruiserGenerator + 1;
+            positionComputerCruiser[2] = positionComputerCruiserGenerator - 1;
+          }
+        }
+        if (positionComputerCruiserGenerator <= 10) {
+          if (positionComputerCruiserGenerator === 9) {
+            positionComputerCruiser[1] = positionComputerCruiserGenerator + 1;
+            positionComputerCruiser[2] = positionComputerCruiserGenerator - 1;
+          }
+          if (positionComputerCruiserGenerator === 10) {
+            positionComputerCruiser[1] = positionComputerCruiserGenerator - 1;
+            positionComputerCruiser[2] = positionComputerCruiserGenerator - 2;
+          }
+        }
+        if (positionComputerCruiserGenerator === 100) {
+          positionComputerCruiser = [100, 99, 98];
+        }
+      }
+    };
+
+    const positionComputerBattleshipAlgorithm = () => {
+      const positionComputerBattleshipGenerator =
+        Math.floor(Math.random() * 100) + 1;
+      positionComputerBattleship[0] = positionComputerBattleshipGenerator;
+      const horizontalOrVertical = Math.floor(Math.random() * 2) + 1;
+      if (horizontalOrVertical === 1) {
+        if (positionComputerBattleshipGenerator <= 70) {
+          positionComputerBattleship[1] =
+            positionComputerBattleshipGenerator + 10;
+          positionComputerBattleship[2] =
+            positionComputerBattleshipGenerator + 20;
+          positionComputerBattleship[3] =
+            positionComputerBattleshipGenerator + 30;
+        }
+        if (
+          positionComputerBattleshipGenerator > 70 &&
+          positionComputerBattleshipGenerator <= 80
+        ) {
+          positionComputerBattleship[1] =
+            positionComputerBattleshipGenerator + 10;
+          positionComputerBattleship[2] =
+            positionComputerBattleshipGenerator + 20;
+          positionComputerBattleship[3] =
+            positionComputerBattleshipGenerator - 10;
+        }
+        if (
+          positionComputerBattleshipGenerator > 80 &&
+          positionComputerBattleshipGenerator <= 90
+        ) {
+          positionComputerBattleship[1] =
+            positionComputerBattleshipGenerator + 10;
+          positionComputerBattleship[2] =
+            positionComputerBattleshipGenerator - 10;
+          positionComputerBattleship[3] =
+            positionComputerBattleshipGenerator - 20;
+        }
+        if (
+          positionComputerBattleshipGenerator > 90 &&
+          positionComputerBattleshipGenerator <= 100
+        ) {
+          positionComputerBattleship[1] =
+            positionComputerBattleshipGenerator - 10;
+          positionComputerBattleship[2] =
+            positionComputerBattleshipGenerator - 20;
+          positionComputerBattleship[3] =
+            positionComputerBattleshipGenerator - 30;
+        }
+      }
+      if (horizontalOrVertical === 2) {
+        positionComputerBattleship[1] = positionComputerBattleshipGenerator + 1;
+        positionComputerBattleship[2] = positionComputerBattleshipGenerator + 2;
+        positionComputerBattleship[3] = positionComputerBattleshipGenerator + 3;
+
+        if (positionComputerBattleshipGenerator > 10) {
+          if (positionComputerBattleshipGenerator.toString()[1] === "8") {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator + 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator + 2;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 1;
+          }
+          if (positionComputerBattleshipGenerator.toString()[1] === "9") {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator + 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator - 1;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 2;
+          }
+        }
+        if (positionComputerBattleshipGenerator <= 10) {
+          if (positionComputerBattleshipGenerator === 8) {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator + 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator + 2;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 1;
+          }
+          if (positionComputerBattleshipGenerator === 9) {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator + 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator - 1;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 2;
+          }
+          if (positionComputerBattleshipGenerator === 10) {
+            positionComputerBattleship[1] =
+              positionComputerBattleshipGenerator - 1;
+            positionComputerBattleship[2] =
+              positionComputerBattleshipGenerator - 2;
+            positionComputerBattleship[3] =
+              positionComputerBattleshipGenerator - 3;
+          }
+        }
+        if (positionComputerBattleshipGenerator === 100) {
+          positionComputerBattleship = [100, 99, 98, 97];
+        }
+      }
+    };
+
+    const positionComputerCarrierAlgorithm = () => {
+      const positionComputerCarrierGenerator =
+        Math.floor(Math.random() * 100) + 1;
+      positionComputerCarrier[0] = positionComputerCarrierGenerator;
+      const horizontalOrVertical = Math.floor(Math.random() * 2) + 1;
+      if (horizontalOrVertical === 1) {
+        if (positionComputerCarrierGenerator <= 60) {
+          positionComputerCarrier[1] = positionComputerCarrierGenerator + 10;
+          positionComputerCarrier[2] = positionComputerCarrierGenerator + 20;
+          positionComputerCarrier[3] = positionComputerCarrierGenerator + 30;
+          positionComputerCarrier[4] = positionComputerCarrierGenerator + 40;
+        }
+        if (
+          positionComputerCarrierGenerator > 60 &&
+          positionComputerCarrierGenerator <= 70
+        ) {
+          positionComputerCarrier[1] = positionComputerCarrierGenerator + 10;
+          positionComputerCarrier[2] = positionComputerCarrierGenerator + 20;
+          positionComputerCarrier[3] = positionComputerCarrierGenerator + 30;
+          positionComputerCarrier[4] = positionComputerCarrierGenerator - 10;
+        }
+        if (
+          positionComputerCarrierGenerator > 70 &&
+          positionComputerCarrierGenerator <= 80
+        ) {
+          positionComputerCarrier[1] = positionComputerCarrierGenerator + 10;
+          positionComputerCarrier[2] = positionComputerCarrierGenerator + 20;
+          positionComputerCarrier[3] = positionComputerCarrierGenerator - 10;
+          positionComputerCarrier[4] = positionComputerCarrierGenerator - 20;
+        }
+        if (
+          positionComputerCarrierGenerator > 80 &&
+          positionComputerCarrierGenerator <= 90
+        ) {
+          positionComputerCarrier[1] = positionComputerCarrierGenerator + 10;
+          positionComputerCarrier[2] = positionComputerCarrierGenerator - 10;
+          positionComputerCarrier[3] = positionComputerCarrierGenerator - 20;
+          positionComputerCarrier[4] = positionComputerCarrierGenerator - 30;
+        }
+        if (
+          positionComputerCarrierGenerator > 90 &&
+          positionComputerCarrierGenerator <= 100
+        ) {
+          positionComputerCarrier[1] = positionComputerCarrierGenerator - 10;
+          positionComputerCarrier[2] = positionComputerCarrierGenerator - 20;
+          positionComputerCarrier[3] = positionComputerCarrierGenerator - 30;
+          positionComputerCarrier[4] = positionComputerCarrierGenerator - 40;
+        }
+      }
+      if (horizontalOrVertical === 2) {
+        positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+        positionComputerCarrier[2] = positionComputerCarrierGenerator + 2;
+        positionComputerCarrier[3] = positionComputerCarrierGenerator + 3;
+        positionComputerCarrier[4] = positionComputerCarrierGenerator + 4;
+        if (positionComputerCarrierGenerator > 10) {
+          if (positionComputerCarrierGenerator.toString()[1] === "7") {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator + 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator + 3;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 1;
+          }
+          if (positionComputerCarrierGenerator.toString()[1] === "8") {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator + 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 2;
+          }
+          if (positionComputerCarrierGenerator.toString()[1] === "9") {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 2;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 3;
+          }
+        }
+        if (positionComputerCarrierGenerator <= 10) {
+          if (positionComputerCarrierGenerator === 7) {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator + 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator + 3;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 1;
+          }
+          if (positionComputerCarrierGenerator === 8) {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator + 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 2;
+          }
+          if (positionComputerCarrierGenerator === 9) {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator + 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 2;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 3;
+          }
+          if (positionComputerCarrierGenerator === 10) {
+            positionComputerCarrier[1] = positionComputerCarrierGenerator - 1;
+            positionComputerCarrier[2] = positionComputerCarrierGenerator - 2;
+            positionComputerCarrier[3] = positionComputerCarrierGenerator - 3;
+            positionComputerCarrier[4] = positionComputerCarrierGenerator - 4;
+          }
+        }
+        if (positionComputerCarrierGenerator === 100) {
+          positionComputerCarrier = [100, 99, 98, 97, 96];
+        }
+      }
+    };
+
+    positionComputerDestroyerAlgorithm();
+    positionComputerSubmarineAlgorithm();
+    positionComputerCruiserAlgorithm();
+    positionComputerBattleshipAlgorithm();
+    positionComputerCarrierAlgorithm();
 
     let computerBoatPositions = [...computerBoats];
-    computerBoatPositions[0].destroyer.position = positionComputerDestroyer;
-    computerBoatPositions[1].submarine.position = positionComputerBoatSubmarine;
-    computerBoatPositions[2].cruiser.position = positionComputerBoatCruiser;
-    computerBoatPositions[3].battleship.position = positionComputerBoatBattleship;
-    computerBoatPositions[4].carrier.position = positionComputerBoatCarrier;
+    computerBoatPositions[0].destroyer.position = [
+      positionComputerDestroyer[0],
+      positionComputerDestroyer[1],
+    ];
 
+    computerBoatPositions[1].submarine.position = [
+      positionComputerSubmarine[0],
+      positionComputerSubmarine[1],
+    ];
+
+    computerBoatPositions[2].cruiser.position = [
+      positionComputerCruiser[0],
+      positionComputerCruiser[1],
+      positionComputerCruiser[2],
+    ];
+
+    computerBoatPositions[3].battleship.position = [
+      positionComputerBattleship[0],
+      positionComputerBattleship[1],
+      positionComputerBattleship[2],
+      positionComputerBattleship[3],
+    ];
+
+    computerBoatPositions[4].carrier.position = [
+      positionComputerCarrier[0],
+      positionComputerCarrier[1],
+      positionComputerCarrier[2],
+      positionComputerCarrier[3],
+      positionComputerCarrier[4],
+    ];
+    console.log(computerBoatPositions);
     setComputerBoats(computerBoatPositions);
   };
 
@@ -304,11 +693,11 @@ const Board = () => {
   // Conditions for Computer to Win
   const checkComputerWin = () => {
     if (
-      humanBoats[0].destroyer.isHit === true &&
-      humanBoats[1].submarine.isHit === true &&
-      humanBoats[2].cruiser.isHit === true &&
-      humanBoats[3].battleship.isHit === true &&
-      humanBoats[4].carrier.isHit === true
+      humanBoats[0].destroyer.isSunk === true &&
+      humanBoats[1].submarine.isSunk === true &&
+      humanBoats[2].cruiser.isSunk === true &&
+      humanBoats[3].battleship.isSunk === true &&
+      humanBoats[4].carrier.isSunk === true
     ) {
       // console.log("COMPUTER WIN");
       setComputerWin(true);
@@ -359,11 +748,11 @@ const Board = () => {
       },
     ]);
     setComputerBoats([
-      { destroyer: { position: null, revealed: null, isHit: false } },
-      { submarine: { position: null, revealed: null, isHit: false } },
-      { cruiser: { position: null, revealed: null, isHit: false } },
-      { battleship: { position: null, revealed: null, isHit: false } },
-      { carrier: { position: null, revealed: null, isHit: false } },
+      { destroyer: { position: null, revealed: null, isSunk: false } },
+      { submarine: { position: null, revealed: null, isSunk: false } },
+      { cruiser: { position: null, revealed: null, isSunk: false } },
+      { battleship: { position: null, revealed: null, isSunk: false } },
+      { carrier: { position: null, revealed: null, isSunk: false } },
     ]);
 
     setAttackPosition(null);
@@ -374,8 +763,8 @@ const Board = () => {
     setComputerWin(false);
   };
 
-  console.log("is game started??", started);
-  console.log("human boats:", humanBoats);
+  // console.log("is game started??", started);
+  // console.log("human boats:", humanBoats);
   console.log("computer boat position", computerBoats[0].destroyer.position);
   console.log("computer boat 2 position", computerBoats[1].submarine.position);
   console.log("computer boat 3 position", computerBoats[2].cruiser.position);
@@ -389,6 +778,7 @@ const Board = () => {
     <>
       <BoardOutterContainer>
         {/* Place Ship Buttons */}
+        <StartGameButton onClick={() => startGame()}>Start</StartGameButton>
         <ButtonsContainer>
           {!started ? (
             <>
