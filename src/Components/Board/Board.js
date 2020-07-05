@@ -404,6 +404,7 @@ const Board = () => {
       humanBoats[2].cruiser.rotated = false;
       humanBoats[3].battleship.rotated = false;
       humanBoats[4].carrier.rotated = false;
+      positionHumanBoatDestroyer(humanBoats[0].destroyer.position[0]);
     }
     if (humanBoats[1].submarine.active) {
       humanBoats[0].destroyer.rotated = false;
@@ -411,6 +412,7 @@ const Board = () => {
       humanBoats[2].cruiser.rotated = false;
       humanBoats[3].battleship.rotated = false;
       humanBoats[4].carrier.rotated = false;
+      positionHumanBoatSubmarine(humanBoats[1].submarine.position[0]);
     }
     if (humanBoats[2].cruiser.active) {
       humanBoats[0].destroyer.rotated = false;
@@ -418,6 +420,7 @@ const Board = () => {
       humanBoats[2].cruiser.rotated ^= true;
       humanBoats[3].battleship.rotated = false;
       humanBoats[4].carrier.rotated = false;
+      positionHumanBoatCruiser(humanBoats[2].cruiser.position[0]);
     }
     if (humanBoats[3].battleship.active) {
       humanBoats[0].destroyer.rotated = false;
@@ -425,6 +428,7 @@ const Board = () => {
       humanBoats[2].cruiser.rotated = false;
       humanBoats[3].battleship.rotated ^= true;
       humanBoats[4].carrier.rotated = false;
+      positionHumanBoatBattleship(humanBoats[3].battleship.position[0]);
     }
     if (humanBoats[4].carrier.active) {
       humanBoats[0].destroyer.rotated = false;
@@ -432,6 +436,7 @@ const Board = () => {
       humanBoats[2].cruiser.rotated = false;
       humanBoats[3].battleship.rotated = false;
       humanBoats[4].carrier.rotated ^= true;
+      positionHumanBoatCarrier(humanBoats[4].carrier.position[0]);
     }
   };
 
@@ -1303,12 +1308,12 @@ const Board = () => {
   };
 
   // console.log("is game started??", started);
-  console.log("human boats:", humanBoats);
-  console.log("computer boat position", computerBoats[0].destroyer.position);
-  console.log("computer boat 2 position", computerBoats[1].submarine.position);
-  console.log("computer boat 3 position", computerBoats[2].cruiser.position);
-  console.log("computer boat 4 position", computerBoats[3].battleship.position);
-  console.log("computer boat 5 position", computerBoats[4].carrier.position);
+  // console.log("human boats:", humanBoats);
+  // console.log("computer boat position", computerBoats[0].destroyer.position);
+  // console.log("computer boat 2 position", computerBoats[1].submarine.position);
+  // console.log("computer boat 3 position", computerBoats[2].cruiser.position);
+  // console.log("computer boat 4 position", computerBoats[3].battleship.position);
+  // console.log("computer boat 5 position", computerBoats[4].carrier.position);
   // console.log("computer boat hit", computerBoats);
   // console.log("human boat position", humanBoat);
   // console.log("computer boat sunk?", computerBoatsHit);
@@ -1379,9 +1384,10 @@ const Board = () => {
             <p>Your Board</p>
           )}
           <BoardContainer>
-            {board.map((boatPosition) => {
+            {board.map((boatPosition, index) => {
               return (
                 <Square
+                  key={index}
                   style={{
                     background:
                       humanBoats[0].destroyer.position[0] === boatPosition
@@ -1504,9 +1510,10 @@ const Board = () => {
             <p>Computer's Board</p>
           )}
           <BoardContainer>
-            {board.map((computerBoatPosition) => {
+            {board.map((computerBoatPosition, index) => {
               return (
                 <Square
+                  key={index}
                   style={{
                     background:
                       attackPosition === computerBoatPosition
