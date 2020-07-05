@@ -68,6 +68,7 @@ const Board = () => {
       },
     },
   ]);
+
   const [computerBoats, setComputerBoats] = useState([
     {
       destroyer: {
@@ -125,21 +126,34 @@ const Board = () => {
   let board = [];
   for (let i = 1; i <= 100; i++) board.push(i);
 
-  // Start the game && position Computer boat
   const startGame = () => {
-    if (
-      humanBoats[0].destroyer.position &&
-      humanBoats[1].submarine.position &&
-      humanBoats[2].cruiser.position &&
-      humanBoats[3].battleship.position &&
+    positionComputerBoat();
+    gameStarted(true);
+  };
+
+  // Start the game && position Computer boat
+  const checkHumanBoats = () => {
+    let duplicate = false;
+    let duplicateChecker = humanBoats[0].destroyer.position.concat(
+      humanBoats[1].submarine.position,
+      humanBoats[2].cruiser.position,
+      humanBoats[3].battleship.position,
       humanBoats[4].carrier.position
-    ) {
-      positionComputerBoat();
-      gameStarted(true);
+    );
+
+    duplicateChecker.sort((a, b) => a - b);
+
+    for (let i = 0; i < duplicateChecker.length - 1; i++) {
+      if (duplicateChecker[i + 1] === duplicateChecker[i]) duplicate = true;
+    }
+
+    if (duplicate === true) {
+      console.log("HUMAN DUPLICATE");
+    } else {
+      startGame();
     }
   };
 
-  // NEED TO CONSIDER OVERLAP FOR HUMAN BOATS
   // Human sets boat position
   const positionHumanBoatDestroyer = (position) => {
     let activeHumanBoats = [...humanBoats];
@@ -1304,16 +1318,15 @@ const Board = () => {
     <>
       <BoardOutterContainer>
         {/* Place Ship Buttons */}
-        {/* <StartGameButton onClick={() => startGame()}>Start</StartGameButton> */}
         <ButtonsContainer>
           {!started ? (
             <>
-              {humanBoats[0].destroyer.position &&
-              humanBoats[1].submarine.position &&
-              humanBoats[2].cruiser.position &&
-              humanBoats[3].battleship.position &&
-              humanBoats[4].carrier.position ? (
-                <StartGameButton onClick={() => startGame()}>
+              {humanBoats[0].destroyer.position[0] &&
+              humanBoats[1].submarine.position[0] &&
+              humanBoats[2].cruiser.position[0] &&
+              humanBoats[3].battleship.position[0] &&
+              humanBoats[4].carrier.position[0] ? (
+                <StartGameButton onClick={() => checkHumanBoats()}>
                   Start
                 </StartGameButton>
               ) : (
