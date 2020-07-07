@@ -138,7 +138,6 @@ const Board = () => {
 
   // Start the game && position Computer boat
   const checkHumanBoats = () => {
-    startGame();
     let duplicate = false;
     let duplicateChecker = humanBoats[0].destroyer.position.concat(
       humanBoats[1].submarine.position,
@@ -1187,7 +1186,7 @@ const Board = () => {
       );
       // If currently not on a hit, computer attack will be random
       if (hardIsHit[0] === false) {
-        computerAttack = Math.floor(Math.random() * 40) + 1;
+        computerAttack = Math.floor(Math.random() * 100) + 1;
         if (squaresComputerAttacked.includes(computerAttack)) {
           computerTurnHard();
           return;
@@ -1806,30 +1805,30 @@ const Board = () => {
         <ButtonsContainer>
           {!started ? (
             <SettingsDiv>
-              {humanBoats[0].destroyer.position[0] &&
-              humanBoats[1].submarine.position[0] &&
-              humanBoats[2].cruiser.position[0] &&
-              humanBoats[3].battleship.position[0] &&
-              humanBoats[4].carrier.position[0] ? (
-                <StartGameButton onClick={() => checkHumanBoats()}>
-                  Start
-                </StartGameButton>
-              ) : (
-                <DifficultyDiv>
-                  <PlaceBoatsDiv>Pick your Difficulty</PlaceBoatsDiv>
-                  <BoatSelectorButton onClick={() => setDifficulty(1)}>
-                    Easy
-                  </BoatSelectorButton>
-                  <BoatSelectorButton onClick={() => setDifficulty(2)}>
-                    Hard
-                  </BoatSelectorButton>
-                  <BoatSelectorButton onClick={() => setDifficulty(3)}>
-                    Impossible
-                  </BoatSelectorButton>
-                </DifficultyDiv>
-              )}
+              <DifficultyDiv>
+                <PlaceBoatsDiv>Pick your Difficulty</PlaceBoatsDiv>
+                <BoatSelectorButton onClick={() => setDifficulty(1)}>
+                  Easy
+                </BoatSelectorButton>
+                <BoatSelectorButton onClick={() => setDifficulty(2)}>
+                  Hard
+                </BoatSelectorButton>
+                <BoatSelectorButton onClick={() => setDifficulty(3)}>
+                  Impossible
+                </BoatSelectorButton>
+              </DifficultyDiv>
               <div>
-                <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+                {humanBoats[0].destroyer.position[0] &&
+                humanBoats[1].submarine.position[0] &&
+                humanBoats[2].cruiser.position[0] &&
+                humanBoats[3].battleship.position[0] &&
+                humanBoats[4].carrier.position[0] ? (
+                  <StartGameButton onClick={() => checkHumanBoats()}>
+                    Start
+                  </StartGameButton>
+                ) : (
+                  <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+                )}
                 <BoatSelectorButton
                   onClick={() => positionHumanBoatDestroyer()}
                 >
