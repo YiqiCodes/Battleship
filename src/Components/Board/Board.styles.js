@@ -82,3 +82,13 @@ export const PlaceBoatsDiv = styled.div`
   background: #eeeeee;
   color: #111111;
 `;
+
+export const DifficultyDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const SettingsDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;

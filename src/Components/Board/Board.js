@@ -12,10 +12,13 @@ import {
   ShootButton,
   BoatSelectorButton,
   PlaceBoatsDiv,
+  DifficultyDiv,
+  SettingsDiv,
 } from "./Board.styles";
 
 const Board = () => {
   const [started, gameStarted] = useState(false);
+  const [difficulty, setDifficulty] = useState(1);
   const [humanBoats, setHumanBoats] = useState([
     {
       destroyer: {
@@ -803,6 +806,7 @@ const Board = () => {
     }
   };
 
+  // Human attacks and computer guesses, attack position gets reset
   const finalizeAttack = (finalAttack) => {
     const humanTurn = () => {
       // Add to squares Human attacked
@@ -1203,6 +1207,7 @@ const Board = () => {
     }
   };
 
+  // Reset all variables
   const restartGame = () => {
     setHumanBoats([
       {
@@ -1325,7 +1330,7 @@ const Board = () => {
         {/* Place Ship Buttons */}
         <ButtonsContainer>
           {!started ? (
-            <>
+            <SettingsDiv>
               {humanBoats[0].destroyer.position[0] &&
               humanBoats[1].submarine.position[0] &&
               humanBoats[2].cruiser.position[0] &&
@@ -1335,42 +1340,58 @@ const Board = () => {
                   Start
                 </StartGameButton>
               ) : (
-                <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+                <DifficultyDiv>
+                  <PlaceBoatsDiv>Pick your Difficulty</PlaceBoatsDiv>
+                  <BoatSelectorButton onClick={() => setDifficulty(1)}>
+                    Easy
+                  </BoatSelectorButton>
+                  <BoatSelectorButton onClick={() => setDifficulty(2)}>
+                    Hard
+                  </BoatSelectorButton>
+                  <BoatSelectorButton onClick={() => setDifficulty(3)}>
+                    Impossible
+                  </BoatSelectorButton>
+                </DifficultyDiv>
               )}
-              <BoatSelectorButton onClick={() => positionHumanBoatDestroyer()}>
-                Destroyer
-              </BoatSelectorButton>
-              <BoatSelectorButton
-                style={{ background: "#A89E96" }}
-                onClick={() => positionHumanBoatSubmarine()}
-              >
-                Submarine
-              </BoatSelectorButton>
-              <BoatSelectorButton
-                style={{ background: "#C29570" }}
-                onClick={() => positionHumanBoatCruiser()}
-              >
-                Cruiser
-              </BoatSelectorButton>
-              <BoatSelectorButton
-                style={{ background: "#8f7e53" }}
-                onClick={() => positionHumanBoatBattleship()}
-              >
-                Battleship
-              </BoatSelectorButton>
-              <BoatSelectorButton
-                style={{ background: "#423e3a", color: "#eeeeee" }}
-                onClick={() => positionHumanBoatCarrier()}
-              >
-                Carrier
-              </BoatSelectorButton>
-              <BoatSelectorButton
-                style={{ background: "pink" }}
-                onClick={() => rotateHumanBoat()}
-              >
-                Rotate
-              </BoatSelectorButton>
-            </>
+              <div>
+                <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+                <BoatSelectorButton
+                  onClick={() => positionHumanBoatDestroyer()}
+                >
+                  Destroyer
+                </BoatSelectorButton>
+                <BoatSelectorButton
+                  style={{ background: "#A89E96" }}
+                  onClick={() => positionHumanBoatSubmarine()}
+                >
+                  Submarine
+                </BoatSelectorButton>
+                <BoatSelectorButton
+                  style={{ background: "#C29570" }}
+                  onClick={() => positionHumanBoatCruiser()}
+                >
+                  Cruiser
+                </BoatSelectorButton>
+                <BoatSelectorButton
+                  style={{ background: "#8f7e53" }}
+                  onClick={() => positionHumanBoatBattleship()}
+                >
+                  Battleship
+                </BoatSelectorButton>
+                <BoatSelectorButton
+                  style={{ background: "#423e3a", color: "#eeeeee" }}
+                  onClick={() => positionHumanBoatCarrier()}
+                >
+                  Carrier
+                </BoatSelectorButton>
+                <BoatSelectorButton
+                  style={{ background: "pink" }}
+                  onClick={() => rotateHumanBoat()}
+                >
+                  Rotate
+                </BoatSelectorButton>
+              </div>
+            </SettingsDiv>
           ) : null}
         </ButtonsContainer>
 
