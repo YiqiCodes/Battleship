@@ -33,7 +33,7 @@ export const Square = styled.div`
 
 export const ButtonsContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
 `;
 
@@ -91,4 +91,24 @@ export const DifficultyDiv = styled.div`
 export const SettingsDiv = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+export const NotificationsBoard = styled.div`
+  width: 100%;
+  height: 60%;
+  background: #eeeeee;
+  justify-content: space-around;
+  overflow-y: scroll;
+`;
+
+export const RightSideContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 800px;
+`;
+
+export const NotificationItems = styled.div`
+  width: 100%;
+  border: 2px solid #111111;
+  color: #111111;
 `;

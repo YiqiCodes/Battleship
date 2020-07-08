@@ -14,6 +14,9 @@ import {
   PlaceBoatsDiv,
   DifficultyDiv,
   SettingsDiv,
+  RightSideContainer,
+  NotificationsBoard,
+  NotificationItems,
 } from "./Board.styles";
 
 const Board = () => {
@@ -121,6 +124,7 @@ const Board = () => {
   const [squaresComputerAttacked, setSquaresComputerAttacked] = useState([]);
   const [humanWin, setHumanWin] = useState(false);
   const [computerWin, setComputerWin] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     checkHumanWin();
@@ -132,6 +136,17 @@ const Board = () => {
   for (let i = 1; i <= 100; i++) board.push(i);
 
   const startGame = () => {
+    let difficultyDisplay;
+
+    if (difficulty === 1) difficultyDisplay = "Difficulty: Easy";
+    if (difficulty === 2) difficultyDisplay = "Difficulty: Hard";
+    if (difficulty === 3) difficultyDisplay = "Difficulty: Impossible";
+
+    setNotifications([
+      ...notifications,
+      "Game has started!",
+      difficultyDisplay,
+    ]);
     positionComputerBoat();
     gameStarted(true);
   };
@@ -813,181 +828,227 @@ const Board = () => {
     const humanTurn = () => {
       // Add to squares Human attacked
       setSquaresHumanAttacked([...squaresHumanAttacked, finalAttack]);
-
+      notifications.push(`Human Attacks: ${finalAttack}`);
       let computerBoatsUpdated = [...computerBoats];
 
       // Check if Human hit
       if (finalAttack === computerBoats[0].destroyer.position[0]) {
         computerBoatsUpdated[0].destroyer.revealed[0] = finalAttack;
         computerBoatsUpdated[0].destroyer.isHit[0] = true;
-        if (computerBoatsUpdated[0].destroyer.isHit[1] === true)
+        notifications.push(`Human Hit: ${finalAttack}`);
+        if (computerBoatsUpdated[0].destroyer.isHit[1] === true) {
           computerBoatsUpdated[0].destroyer.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Destroyer`);
+          setComputerBoats(computerBoatsUpdated);
+        }
       }
       if (finalAttack === computerBoats[0].destroyer.position[1]) {
         computerBoatsUpdated[0].destroyer.revealed[1] = finalAttack;
         computerBoatsUpdated[0].destroyer.isHit[1] = true;
-        if (computerBoatsUpdated[0].destroyer.isHit[0] === true)
+        notifications.push(`Human Hit: ${finalAttack}`);
+        if (computerBoatsUpdated[0].destroyer.isHit[0] === true) {
           computerBoatsUpdated[0].destroyer.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Destroyer`);
+          setComputerBoats(computerBoatsUpdated);
+        }
       }
 
       if (finalAttack === computerBoats[1].submarine.position[0]) {
         computerBoatsUpdated[1].submarine.revealed[0] = finalAttack;
         computerBoatsUpdated[1].submarine.isHit[0] = true;
-        if (computerBoatsUpdated[1].submarine.isHit[1] === true)
+        notifications.push(`Human Hit: ${finalAttack}`);
+        if (computerBoatsUpdated[1].submarine.isHit[1] === true) {
           computerBoatsUpdated[1].submarine.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Submarine`);
+          setComputerBoats(computerBoatsUpdated);
+        }
       }
-
       if (finalAttack === computerBoats[1].submarine.position[1]) {
         computerBoatsUpdated[1].submarine.revealed[1] = finalAttack;
         computerBoatsUpdated[1].submarine.isHit[1] = true;
-        if (computerBoatsUpdated[1].submarine.isHit[0] === true)
+        notifications.push(`Human Hit: ${finalAttack}`);
+        if (computerBoatsUpdated[1].submarine.isHit[0] === true) {
           computerBoatsUpdated[1].submarine.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Submarine`);
+        }
       }
 
       if (finalAttack === computerBoats[2].cruiser.position[0]) {
         computerBoatsUpdated[2].cruiser.revealed[0] = finalAttack;
         computerBoatsUpdated[2].cruiser.isHit[0] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[2].cruiser.isHit[1] === true &&
           computerBoatsUpdated[2].cruiser.isHit[2] === true
-        )
+        ) {
           computerBoatsUpdated[2].cruiser.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Cruiser`);
+        }
       }
-
       if (finalAttack === computerBoats[2].cruiser.position[1]) {
         computerBoatsUpdated[2].cruiser.revealed[1] = finalAttack;
         computerBoatsUpdated[2].cruiser.isHit[1] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[2].cruiser.isHit[0] === true &&
           computerBoatsUpdated[2].cruiser.isHit[2] === true
-        )
+        ) {
           computerBoatsUpdated[2].cruiser.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Cruiser`);
+        }
       }
 
       if (finalAttack === computerBoats[2].cruiser.position[2]) {
         computerBoatsUpdated[2].cruiser.revealed[2] = finalAttack;
         computerBoatsUpdated[2].cruiser.isHit[2] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[2].cruiser.isHit[1] === true &&
           computerBoatsUpdated[2].cruiser.isHit[2] === true
-        )
+        ) {
           computerBoatsUpdated[2].cruiser.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Cruiser`);
+        }
       }
 
       if (finalAttack === computerBoats[3].battleship.position[0]) {
         computerBoatsUpdated[3].battleship.revealed[0] = finalAttack;
         computerBoatsUpdated[3].battleship.isHit[0] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[3].battleship.isHit[1] === true &&
           computerBoatsUpdated[3].battleship.isHit[2] === true &&
           computerBoatsUpdated[3].battleship.isHit[3] === true
-        )
+        ) {
+          notifications.push(`Human Sunk: Battleship`);
           computerBoatsUpdated[3].battleship.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+        }
       }
 
       if (finalAttack === computerBoats[3].battleship.position[1]) {
         computerBoatsUpdated[3].battleship.revealed[1] = finalAttack;
         computerBoatsUpdated[3].battleship.isHit[1] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[3].battleship.isHit[0] === true &&
           computerBoatsUpdated[3].battleship.isHit[2] === true &&
           computerBoatsUpdated[3].battleship.isHit[3] === true
-        )
+        ) {
           computerBoatsUpdated[3].battleship.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Battleship`);
+          setComputerBoats(computerBoatsUpdated);
+        }
       }
 
       if (finalAttack === computerBoats[3].battleship.position[2]) {
         computerBoatsUpdated[3].battleship.revealed[2] = finalAttack;
         computerBoatsUpdated[3].battleship.isHit[2] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[3].battleship.isHit[0] === true &&
           computerBoatsUpdated[3].battleship.isHit[1] === true &&
           computerBoatsUpdated[3].battleship.isHit[3] === true
-        )
+        ) {
           computerBoatsUpdated[3].battleship.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Battleship`);
+        }
       }
 
       if (finalAttack === computerBoats[3].battleship.position[3]) {
         computerBoatsUpdated[3].battleship.revealed[3] = finalAttack;
         computerBoatsUpdated[3].battleship.isHit[3] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[3].battleship.isHit[0] === true &&
           computerBoatsUpdated[3].battleship.isHit[1] === true &&
           computerBoatsUpdated[3].battleship.isHit[2] === true
-        )
+        ) {
           computerBoatsUpdated[3].battleship.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Battleship`);
+        }
       }
 
       if (finalAttack === computerBoats[4].carrier.position[0]) {
         computerBoatsUpdated[4].carrier.revealed[0] = finalAttack;
         computerBoatsUpdated[4].carrier.isHit[0] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[4].carrier.isHit[1] === true &&
           computerBoatsUpdated[4].carrier.isHit[2] === true &&
           computerBoatsUpdated[4].carrier.isHit[3] === true &&
           computerBoatsUpdated[4].carrier.isHit[4] === true
-        )
+        ) {
           computerBoatsUpdated[4].carrier.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Carrier`);
+        }
       }
       if (finalAttack === computerBoats[4].carrier.position[1]) {
         computerBoatsUpdated[4].carrier.revealed[1] = finalAttack;
         computerBoatsUpdated[4].carrier.isHit[1] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[4].carrier.isHit[0] === true &&
           computerBoatsUpdated[4].carrier.isHit[2] === true &&
           computerBoatsUpdated[4].carrier.isHit[3] === true &&
           computerBoatsUpdated[4].carrier.isHit[4] === true
-        )
+        ) {
           computerBoatsUpdated[4].carrier.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Carrier`);
+        }
       }
       if (finalAttack === computerBoats[4].carrier.position[2]) {
         computerBoatsUpdated[4].carrier.revealed[2] = finalAttack;
         computerBoatsUpdated[4].carrier.isHit[2] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[4].carrier.isHit[0] === true &&
           computerBoatsUpdated[4].carrier.isHit[1] === true &&
           computerBoatsUpdated[4].carrier.isHit[3] === true &&
           computerBoatsUpdated[4].carrier.isHit[4] === true
-        )
+        ) {
           computerBoatsUpdated[4].carrier.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Carrier`);
+        }
       }
       if (finalAttack === computerBoats[4].carrier.position[3]) {
         computerBoatsUpdated[4].carrier.revealed[3] = finalAttack;
         computerBoatsUpdated[4].carrier.isHit[3] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[4].carrier.isHit[0] === true &&
           computerBoatsUpdated[4].carrier.isHit[1] === true &&
           computerBoatsUpdated[4].carrier.isHit[2] === true &&
           computerBoatsUpdated[4].carrier.isHit[4] === true
-        )
+        ) {
           computerBoatsUpdated[4].carrier.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Carrier`);
+        }
       }
       if (finalAttack === computerBoats[4].carrier.position[4]) {
         computerBoatsUpdated[4].carrier.revealed[4] = finalAttack;
         computerBoatsUpdated[4].carrier.isHit[4] = true;
+        notifications.push(`Human Hit: ${finalAttack}`);
         if (
           computerBoatsUpdated[4].carrier.isHit[0] === true &&
           computerBoatsUpdated[4].carrier.isHit[1] === true &&
           computerBoatsUpdated[4].carrier.isHit[2] === true &&
           computerBoatsUpdated[4].carrier.isHit[3] === true
-        )
+        ) {
           computerBoatsUpdated[4].carrier.isSunk = true;
-        setComputerBoats(computerBoatsUpdated);
+          setComputerBoats(computerBoatsUpdated);
+          notifications.push(`Human Sunk: Carrier`);
+        }
       }
     };
 
@@ -1003,142 +1064,183 @@ const Board = () => {
           ...squaresComputerAttacked,
           computerAttack,
         ]);
+        notifications.push(`Computer Attacks: ${computerAttack}`);
         let humanBoatsUpdated = [...humanBoats];
 
         // Check if Computer hit/win function
         if (computerAttack === humanBoats[0].destroyer.position[0]) {
           humanBoatsUpdated[0].destroyer.revealed[0] = computerAttack;
           humanBoatsUpdated[0].destroyer.isHit[0] = true;
-          if (humanBoatsUpdated[0].destroyer.isHit[1] === true)
+          notifications.push(`Computer Hit: ${computerAttack}`);
+          if (humanBoatsUpdated[0].destroyer.isHit[1] === true) {
             humanBoatsUpdated[0].destroyer.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Destroyer`);
+          }
         }
         if (computerAttack === humanBoats[0].destroyer.position[1]) {
           humanBoatsUpdated[0].destroyer.revealed[1] = computerAttack;
           humanBoatsUpdated[0].destroyer.isHit[1] = true;
-          if (humanBoatsUpdated[0].destroyer.isHit[0] === true)
+          notifications.push(`Computer Hit: ${computerAttack}`);
+          if (humanBoatsUpdated[0].destroyer.isHit[0] === true) {
             humanBoatsUpdated[0].destroyer.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Destroyer`);
+          }
         }
 
         if (computerAttack === humanBoats[1].submarine.position[0]) {
           humanBoatsUpdated[1].submarine.revealed[0] = computerAttack;
           humanBoatsUpdated[1].submarine.isHit[0] = true;
-          if (humanBoatsUpdated[1].submarine.isHit[1])
+          notifications.push(`Computer Hit: ${computerAttack}`);
+          if (humanBoatsUpdated[1].submarine.isHit[1]) {
             humanBoatsUpdated[1].submarine.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Submarine`);
+          }
         }
         if (computerAttack === humanBoats[1].submarine.position[1]) {
           humanBoatsUpdated[1].submarine.revealed[1] = computerAttack;
           humanBoatsUpdated[1].submarine.isHit[1] = true;
-          if (humanBoatsUpdated[1].submarine.isHit[0])
+          notifications.push(`Computer Hit: ${computerAttack}`);
+          if (humanBoatsUpdated[1].submarine.isHit[0]) {
             humanBoatsUpdated[1].submarine.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Submarine`);
+          }
         }
 
         if (computerAttack === humanBoats[2].cruiser.position[0]) {
           humanBoatsUpdated[2].cruiser.revealed[0] = computerAttack;
           humanBoatsUpdated[2].cruiser.isHit[0] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[2].cruiser.isHit[1] &&
             humanBoatsUpdated[2].cruiser.isHit[2]
-          )
+          ) {
             humanBoatsUpdated[2].cruiser.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Cruiser`);
+          }
         }
         if (computerAttack === humanBoats[2].cruiser.position[1]) {
           humanBoatsUpdated[2].cruiser.revealed[1] = computerAttack;
           humanBoatsUpdated[2].cruiser.isHit[1] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[2].cruiser.isHit[0] &&
             humanBoatsUpdated[2].cruiser.isHit[2]
-          )
+          ) {
             humanBoatsUpdated[2].cruiser.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Cruiser`);
+          }
         }
         if (computerAttack === humanBoats[2].cruiser.position[2]) {
           humanBoatsUpdated[2].cruiser.revealed[2] = computerAttack;
           humanBoatsUpdated[2].cruiser.isHit[2] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[2].cruiser.isHit[0] &&
             humanBoatsUpdated[2].cruiser.isHit[1]
-          )
+          ) {
             humanBoatsUpdated[2].cruiser.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Cruiser`);
+          }
         }
 
         if (computerAttack === humanBoats[3].battleship.position[0]) {
           humanBoatsUpdated[3].battleship.revealed[0] = computerAttack;
           humanBoatsUpdated[3].battleship.isHit[0] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[3].battleship.isHit[1] &&
             humanBoatsUpdated[3].battleship.isHit[2] &&
             humanBoatsUpdated[3].battleship.isHit[3]
-          )
+          ) {
             humanBoatsUpdated[3].battleship.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Battleship`);
+          }
         }
         if (computerAttack === humanBoats[3].battleship.position[1]) {
           humanBoatsUpdated[3].battleship.revealed[1] = computerAttack;
           humanBoatsUpdated[3].battleship.isHit[1] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[3].battleship.isHit[0] &&
             humanBoatsUpdated[3].battleship.isHit[2] &&
             humanBoatsUpdated[3].battleship.isHit[3]
-          )
+          ) {
             humanBoatsUpdated[3].battleship.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Battleship`);
+          }
         }
         if (computerAttack === humanBoats[3].battleship.position[2]) {
           humanBoatsUpdated[3].battleship.revealed[2] = computerAttack;
           humanBoatsUpdated[3].battleship.isHit[2] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[3].battleship.isHit[0] &&
             humanBoatsUpdated[3].battleship.isHit[1] &&
             humanBoatsUpdated[3].battleship.isHit[2]
-          )
+          ) {
             humanBoatsUpdated[3].battleship.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Battleship`);
+          }
         }
         if (computerAttack === humanBoats[3].battleship.position[3]) {
           humanBoatsUpdated[3].battleship.revealed[3] = computerAttack;
           humanBoatsUpdated[3].battleship.isHit[3] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[3].battleship.isHit[0] &&
             humanBoatsUpdated[3].battleship.isHit[1] &&
             humanBoatsUpdated[3].battleship.isHit[2]
-          )
+          ) {
             humanBoatsUpdated[3].battleship.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Battleship`);
+          }
         }
 
         if (computerAttack === humanBoats[4].carrier.position[0]) {
           humanBoatsUpdated[4].carrier.revealed[0] = computerAttack;
           humanBoatsUpdated[4].carrier.isHit[0] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[4].carrier.isHit[1] &&
             humanBoatsUpdated[4].carrier.isHit[2] &&
             humanBoatsUpdated[4].carrier.isHit[3] &&
             humanBoatsUpdated[4].carrier.isHit[4]
-          )
+          ) {
             humanBoatsUpdated[4].carrier.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Carrier`);
+          }
         }
         if (computerAttack === humanBoats[4].carrier.position[1]) {
           humanBoatsUpdated[4].carrier.revealed[1] = computerAttack;
           humanBoatsUpdated[4].carrier.isHit[1] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[4].carrier.isHit[0] &&
             humanBoatsUpdated[4].carrier.isHit[2] &&
             humanBoatsUpdated[4].carrier.isHit[3] &&
             humanBoatsUpdated[4].carrier.isHit[4]
-          )
+          ) {
             humanBoatsUpdated[4].carrier.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Carrier`);
+          }
         }
         if (computerAttack === humanBoats[4].carrier.position[2]) {
           humanBoatsUpdated[4].carrier.revealed[2] = computerAttack;
           humanBoatsUpdated[4].carrier.isHit[2] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[4].carrier.isHit[0] &&
             humanBoatsUpdated[4].carrier.isHit[1] &&
@@ -1151,26 +1253,32 @@ const Board = () => {
         if (computerAttack === humanBoats[4].carrier.position[3]) {
           humanBoatsUpdated[4].carrier.revealed[3] = computerAttack;
           humanBoatsUpdated[4].carrier.isHit[3] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[4].carrier.isHit[0] &&
             humanBoatsUpdated[4].carrier.isHit[1] &&
             humanBoatsUpdated[4].carrier.isHit[2] &&
             humanBoatsUpdated[4].carrier.isHit[4]
-          )
+          ) {
             humanBoatsUpdated[4].carrier.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Carrier`);
+          }
         }
         if (computerAttack === humanBoats[4].carrier.position[4]) {
           humanBoatsUpdated[4].carrier.revealed[4] = computerAttack;
           humanBoatsUpdated[4].carrier.isHit[4] = true;
+          notifications.push(`Computer Hit: ${computerAttack}`);
           if (
             humanBoatsUpdated[4].carrier.isHit[0] &&
             humanBoatsUpdated[4].carrier.isHit[1] &&
             humanBoatsUpdated[4].carrier.isHit[2] &&
             humanBoatsUpdated[4].carrier.isHit[3]
-          )
+          ) {
             humanBoatsUpdated[4].carrier.isSunk = true;
-          setHumanBoats(humanBoatsUpdated);
+            setHumanBoats(humanBoatsUpdated);
+            notifications.push(`Computer Sunks: Carrier`);
+          }
         }
       }
     };
@@ -1184,6 +1292,7 @@ const Board = () => {
         humanBoats[3].battleship.position,
         humanBoats[4].carrier.position
       );
+
       // If currently not on a hit, computer attack will be random
       if (hardIsHit[0] === false) {
         computerAttack = Math.floor(Math.random() * 100) + 1;
@@ -1256,13 +1365,16 @@ const Board = () => {
       // Add to squares Computer attacked
       setSquaresComputerAttacked([...squaresComputerAttacked, computerAttack]);
       let humanBoatsUpdated = [...humanBoats];
+      notifications.push(`Computer Attacks: ${computerAttack}`);
 
       // Check if Computer hit/win function
       if (computerAttack === humanBoats[0].destroyer.position[0]) {
         humanBoatsUpdated[0].destroyer.revealed[0] = computerAttack;
         humanBoatsUpdated[0].destroyer.isHit[0] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (humanBoatsUpdated[0].destroyer.isHit[1] === true) {
           humanBoatsUpdated[0].destroyer.isSunk = true;
+          notifications.push(`Computer Sunk: Destroyer`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1270,8 +1382,10 @@ const Board = () => {
       if (computerAttack === humanBoats[0].destroyer.position[1]) {
         humanBoatsUpdated[0].destroyer.revealed[1] = computerAttack;
         humanBoatsUpdated[0].destroyer.isHit[1] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (humanBoatsUpdated[0].destroyer.isHit[0] === true) {
           humanBoatsUpdated[0].destroyer.isSunk = true;
+          notifications.push(`Computer Sunk: Destroyer`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1280,8 +1394,10 @@ const Board = () => {
       if (computerAttack === humanBoats[1].submarine.position[0]) {
         humanBoatsUpdated[1].submarine.revealed[0] = computerAttack;
         humanBoatsUpdated[1].submarine.isHit[0] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (humanBoatsUpdated[1].submarine.isHit[1]) {
           humanBoatsUpdated[1].submarine.isSunk = true;
+          notifications.push(`Computer Sunk: Submarine`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1289,8 +1405,10 @@ const Board = () => {
       if (computerAttack === humanBoats[1].submarine.position[1]) {
         humanBoatsUpdated[1].submarine.revealed[1] = computerAttack;
         humanBoatsUpdated[1].submarine.isHit[1] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (humanBoatsUpdated[1].submarine.isHit[0]) {
           humanBoatsUpdated[1].submarine.isSunk = true;
+          notifications.push(`Computer Sunk: Submarine`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1299,11 +1417,13 @@ const Board = () => {
       if (computerAttack === humanBoats[2].cruiser.position[0]) {
         humanBoatsUpdated[2].cruiser.revealed[0] = computerAttack;
         humanBoatsUpdated[2].cruiser.isHit[0] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[2].cruiser.isHit[1] &&
           humanBoatsUpdated[2].cruiser.isHit[2]
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
+          notifications.push(`Computer Sunk: Cruiser`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1311,11 +1431,13 @@ const Board = () => {
       if (computerAttack === humanBoats[2].cruiser.position[1]) {
         humanBoatsUpdated[2].cruiser.revealed[1] = computerAttack;
         humanBoatsUpdated[2].cruiser.isHit[1] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[2].cruiser.isHit[0] &&
           humanBoatsUpdated[2].cruiser.isHit[2]
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
+          notifications.push(`Computer Sunk: Cruiser`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1323,11 +1445,13 @@ const Board = () => {
       if (computerAttack === humanBoats[2].cruiser.position[2]) {
         humanBoatsUpdated[2].cruiser.revealed[2] = computerAttack;
         humanBoatsUpdated[2].cruiser.isHit[2] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[2].cruiser.isHit[0] &&
           humanBoatsUpdated[2].cruiser.isHit[1]
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
+          notifications.push(`Computer Sunk: Cruiser`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1336,12 +1460,14 @@ const Board = () => {
       if (computerAttack === humanBoats[3].battleship.position[0]) {
         humanBoatsUpdated[3].battleship.revealed[0] = computerAttack;
         humanBoatsUpdated[3].battleship.isHit[0] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[3].battleship.isHit[1] &&
           humanBoatsUpdated[3].battleship.isHit[2] &&
           humanBoatsUpdated[3].battleship.isHit[3]
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
+          notifications.push(`Computer Sunk: Battleship`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1349,12 +1475,14 @@ const Board = () => {
       if (computerAttack === humanBoats[3].battleship.position[1]) {
         humanBoatsUpdated[3].battleship.revealed[1] = computerAttack;
         humanBoatsUpdated[3].battleship.isHit[1] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[3].battleship.isHit[0] &&
           humanBoatsUpdated[3].battleship.isHit[2] &&
           humanBoatsUpdated[3].battleship.isHit[3]
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
+          notifications.push(`Computer Sunk: Battleship`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1362,12 +1490,14 @@ const Board = () => {
       if (computerAttack === humanBoats[3].battleship.position[2]) {
         humanBoatsUpdated[3].battleship.revealed[2] = computerAttack;
         humanBoatsUpdated[3].battleship.isHit[2] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[3].battleship.isHit[0] &&
           humanBoatsUpdated[3].battleship.isHit[1] &&
           humanBoatsUpdated[3].battleship.isHit[3]
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
+          notifications.push(`Computer Sunk: Battleship`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1375,12 +1505,14 @@ const Board = () => {
       if (computerAttack === humanBoats[3].battleship.position[3]) {
         humanBoatsUpdated[3].battleship.revealed[3] = computerAttack;
         humanBoatsUpdated[3].battleship.isHit[3] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[3].battleship.isHit[0] &&
           humanBoatsUpdated[3].battleship.isHit[1] &&
           humanBoatsUpdated[3].battleship.isHit[2]
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
+          notifications.push(`Computer Sunk: Battleship`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1389,6 +1521,7 @@ const Board = () => {
       if (computerAttack === humanBoats[4].carrier.position[0]) {
         humanBoatsUpdated[4].carrier.revealed[0] = computerAttack;
         humanBoatsUpdated[4].carrier.isHit[0] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[4].carrier.isHit[1] &&
           humanBoatsUpdated[4].carrier.isHit[2] &&
@@ -1396,6 +1529,7 @@ const Board = () => {
           humanBoatsUpdated[4].carrier.isHit[4]
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
+          notifications.push(`Computer Sunk: Carrier`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1403,6 +1537,7 @@ const Board = () => {
       if (computerAttack === humanBoats[4].carrier.position[1]) {
         humanBoatsUpdated[4].carrier.revealed[1] = computerAttack;
         humanBoatsUpdated[4].carrier.isHit[1] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[4].carrier.isHit[0] &&
           humanBoatsUpdated[4].carrier.isHit[2] &&
@@ -1410,6 +1545,7 @@ const Board = () => {
           humanBoatsUpdated[4].carrier.isHit[4]
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
+          notifications.push(`Computer Sunk: Carrier`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1417,6 +1553,7 @@ const Board = () => {
       if (computerAttack === humanBoats[4].carrier.position[2]) {
         humanBoatsUpdated[4].carrier.revealed[2] = computerAttack;
         humanBoatsUpdated[4].carrier.isHit[2] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[4].carrier.isHit[0] &&
           humanBoatsUpdated[4].carrier.isHit[1] &&
@@ -1424,6 +1561,7 @@ const Board = () => {
           humanBoatsUpdated[4].carrier.isHit[4]
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
+          notifications.push(`Computer Sunk: Carrier`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1431,6 +1569,7 @@ const Board = () => {
       if (computerAttack === humanBoats[4].carrier.position[3]) {
         humanBoatsUpdated[4].carrier.revealed[3] = computerAttack;
         humanBoatsUpdated[4].carrier.isHit[3] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[4].carrier.isHit[0] &&
           humanBoatsUpdated[4].carrier.isHit[1] &&
@@ -1438,6 +1577,7 @@ const Board = () => {
           humanBoatsUpdated[4].carrier.isHit[4]
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
+          notifications.push(`Computer Sunk: Carrier`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1445,6 +1585,7 @@ const Board = () => {
       if (computerAttack === humanBoats[4].carrier.position[4]) {
         humanBoatsUpdated[4].carrier.revealed[4] = computerAttack;
         humanBoatsUpdated[4].carrier.isHit[4] = true;
+        notifications.push(`Computer Hit: ${computerAttack}`);
         if (
           humanBoatsUpdated[4].carrier.isHit[0] &&
           humanBoatsUpdated[4].carrier.isHit[1] &&
@@ -1452,6 +1593,7 @@ const Board = () => {
           humanBoatsUpdated[4].carrier.isHit[3]
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
+          notifications.push(`Computer Sunk: Carrier`);
           setHardIsHit([false, "", null, null]);
           setHumanBoats(humanBoatsUpdated);
         }
@@ -1468,7 +1610,8 @@ const Board = () => {
       let computerAttack = humanBoatSquares[impossibleTracker];
       let impossibleTally = impossibleTracker + 1;
       setImpossibleTracker(impossibleTally);
-      setSquaresComputerAttacked([...squaresComputerAttacked, computerAttack]);
+      notifications.push(`Computer Hits: ${computerAttack}`);
+
       let humanBoatsUpdated = [...humanBoats];
 
       // Check if Computer hit/win function
@@ -1478,6 +1621,7 @@ const Board = () => {
         if (humanBoatsUpdated[0].destroyer.isHit[1] === true) {
           humanBoatsUpdated[0].destroyer.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Destroyer`);
         }
       }
       if (computerAttack === humanBoats[0].destroyer.position[1]) {
@@ -1486,6 +1630,7 @@ const Board = () => {
         if (humanBoatsUpdated[0].destroyer.isHit[0] === true) {
           humanBoatsUpdated[0].destroyer.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Destroyer`);
         }
       }
 
@@ -1495,6 +1640,7 @@ const Board = () => {
         if (humanBoatsUpdated[1].submarine.isHit[1]) {
           humanBoatsUpdated[1].submarine.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Submarine`);
         }
       }
       if (computerAttack === humanBoats[1].submarine.position[1]) {
@@ -1503,6 +1649,7 @@ const Board = () => {
         if (humanBoatsUpdated[1].submarine.isHit[0]) {
           humanBoatsUpdated[1].submarine.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Submarine`);
         }
       }
 
@@ -1515,6 +1662,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Cruiser`);
         }
       }
       if (computerAttack === humanBoats[2].cruiser.position[1]) {
@@ -1526,6 +1674,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Cruiser`);
         }
       }
       if (computerAttack === humanBoats[2].cruiser.position[2]) {
@@ -1537,6 +1686,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[2].cruiser.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Cruiser`);
         }
       }
 
@@ -1550,6 +1700,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Battleship`);
         }
       }
       if (computerAttack === humanBoats[3].battleship.position[1]) {
@@ -1562,6 +1713,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Battleship`);
         }
       }
       if (computerAttack === humanBoats[3].battleship.position[2]) {
@@ -1574,6 +1726,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Battleship`);
         }
       }
       if (computerAttack === humanBoats[3].battleship.position[3]) {
@@ -1586,6 +1739,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[3].battleship.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Battleship`);
         }
       }
 
@@ -1600,6 +1754,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Carrier`);
         }
       }
       if (computerAttack === humanBoats[4].carrier.position[1]) {
@@ -1613,6 +1768,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Carrier`);
         }
       }
       if (computerAttack === humanBoats[4].carrier.position[2]) {
@@ -1626,6 +1782,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Carrier`);
         }
       }
       if (computerAttack === humanBoats[4].carrier.position[3]) {
@@ -1639,6 +1796,7 @@ const Board = () => {
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Carrier`);
         }
       }
       if (computerAttack === humanBoats[4].carrier.position[4]) {
@@ -1652,12 +1810,12 @@ const Board = () => {
         ) {
           humanBoatsUpdated[4].carrier.isSunk = true;
           setHumanBoats(humanBoatsUpdated);
+          notifications.push(`Computer Sunk: Carrier`);
         }
       }
     };
 
     humanTurn();
-
     if (difficulty === 1) computerTurnEasy();
     if (difficulty === 2) computerTurnHard();
     if (difficulty === 3) computerTurnImpossible();
@@ -1675,6 +1833,7 @@ const Board = () => {
       computerBoats[3].battleship.isSunk === true &&
       computerBoats[4].carrier.isSunk === true
     ) {
+      notifications.push(`Human Wins!`);
       setHumanWin(true);
     }
   };
@@ -1688,7 +1847,7 @@ const Board = () => {
       humanBoats[3].battleship.isSunk === true &&
       humanBoats[4].carrier.isSunk === true
     ) {
-      // console.log("COMPUTER WIN");
+      notifications.push(`Computer Wins!`);
       setComputerWin(true);
     }
   };
@@ -1796,7 +1955,15 @@ const Board = () => {
     gameStarted(false);
     setHumanWin(false);
     setComputerWin(false);
+    setNotifications([null]);
+    setImpossibleTracker(0);
+    setDifficulty(1);
   };
+
+  // Notification Display
+  const NotificationItem = notifications.map((item, index) => (
+    <NotificationItems key={index}> {item}</NotificationItems>
+  ));
 
   return (
     <>
@@ -2133,19 +2300,24 @@ const Board = () => {
         </BoardTitleContainer>
 
         {/* Game Buttons */}
-        <ButtonsContainer>
-          {started && !humanWin && !computerWin ? (
-            <ShootButton onClick={() => finalizeAttack(attackPosition)}>
-              Fire!
-            </ShootButton>
-          ) : null}
+        <RightSideContainer>
+          <ButtonsContainer>
+            {started && !humanWin && !computerWin ? (
+              <ShootButton onClick={() => finalizeAttack(attackPosition)}>
+                Fire!
+              </ShootButton>
+            ) : null}
 
+            {started ? (
+              <RestartGameButton onClick={() => restartGame()}>
+                Play Again
+              </RestartGameButton>
+            ) : null}
+          </ButtonsContainer>
           {started ? (
-            <RestartGameButton onClick={() => restartGame()}>
-              Play Again
-            </RestartGameButton>
+            <NotificationsBoard>{NotificationItem}</NotificationsBoard>
           ) : null}
-        </ButtonsContainer>
+        </RightSideContainer>
       </BoardOutterContainer>
     </>
   );
