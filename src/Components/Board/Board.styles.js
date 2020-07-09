@@ -3,12 +3,18 @@ import styled from "styled-components";
 export const BoardOutterContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const BoardTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 500px;
+  width: 400px;
 `;
 export const BoardContainer = styled.div`
   display: flex;
@@ -31,10 +37,32 @@ export const Square = styled.div`
   color: transparent;
 `;
 
+export const RightSideContainer = styled.div`
+  height: 500px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 1rem;
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  width: 250px;
+  height: 500px;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-evenly;
+`;
+
+export const RightSideButtonsDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 4px;
+  margin: 10px 0px;
+  border-radius: 8px;
+  background: #eeeeee;
 `;
 
 export const StartGameButton = styled.button`
@@ -47,15 +75,19 @@ export const StartGameButton = styled.button`
 export const RestartGameButton = styled.button`
   width: 5rem;
   height: 2rem;
-  background: #88c7d1;
   border-radius: 8px;
+  margin: 10px 0px;
+  background: #48bd70;
+  color: #111111;
 `;
 
 export const ShootButton = styled.button`
   width: 5rem;
   height: 2rem;
-  background: #bd4a47;
   border-radius: 8px;
+  margin: 10px 0px;
+  background: #ff7f7a;
+  color: #111111;
 `;
 
 export const BoatSelectorButton = styled.button`
@@ -68,6 +100,7 @@ export const BoatSelectorButton = styled.button`
   height: 2rem;
   background: #d4cec4;
   border-radius: 8px;
+  margin: 4px 0px;
 `;
 
 export const PlaceBoatsDiv = styled.div`
@@ -79,13 +112,25 @@ export const PlaceBoatsDiv = styled.div`
   font-size: x-small;
   width: 5rem;
   height: 2rem;
-  background: #eeeeee;
-  color: #111111;
+  color: #eeeeee;
+  background: #111111;
 `;
 
 export const DifficultyDiv = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0 10px;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  background: #eeeeee;
+`;
+
+export const BoatsDiv = styled.div`
+  background: #eeeeee;
+  border-radius: 8px;
+  margin: 0 10px;
+  padding: 10px;
 `;
 
 export const SettingsDiv = styled.div`
@@ -99,16 +144,15 @@ export const NotificationsBoard = styled.div`
   background: #eeeeee;
   justify-content: space-around;
   overflow-y: scroll;
-`;
-
-export const RightSideContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-height: 800px;
+  border-radius: 8px;
 `;
 
 export const NotificationItems = styled.div`
   width: 100%;
-  border: 2px solid #111111;
+  display: flex;
+  justify-content: center;
+  padding: 4px 0px;
+  border: 0.5px solid #111111;
   color: #111111;
+  font-size: 15px;
 `;
