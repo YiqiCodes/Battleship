@@ -68,7 +68,7 @@ export const RightSideButtonsDiv = styled.div`
 export const StartGameButton = styled.button`
   width: 5rem;
   height: 2rem;
-  background: #89ba88;
+  background: #3fbd8b;
   border-radius: 8px;
 `;
 
@@ -98,8 +98,10 @@ export const BoatSelectorButton = styled.button`
   border-radius: 8px;
   width: 5rem;
   height: 2rem;
-  background: #d4cec4;
+  background: #e3befa;
+  color: #eeeeee;
   border-radius: 8px;
+  border: 2px solid #111111;
   margin: 4px 0px;
 `;
 
@@ -148,11 +150,10 @@ export const NotificationsBoard = styled.div`
 `;
 
 export const NotificationItems = styled.div`
-  width: 100%;
   display: flex;
   justify-content: center;
   padding: 4px 0px;
-  border: 0.5px solid #111111;
+  border-bottom: 0.5px solid #111111;
   color: #111111;
   font-size: 15px;
 `;
