@@ -12,8 +12,10 @@ import {
   ShootButton,
   BoatSelectorButton,
   PlaceBoatsDiv,
+  BoatsDiv,
   DifficultyDiv,
   SettingsDiv,
+  RightSideButtonsDiv,
   RightSideContainer,
   NotificationsBoard,
   NotificationItems,
@@ -76,7 +78,6 @@ const Board = () => {
       },
     },
   ]);
-
   const [computerBoats, setComputerBoats] = useState([
     {
       destroyer: {
@@ -1964,77 +1965,87 @@ const Board = () => {
   const NotificationItem = notifications.map((item, index) => (
     <NotificationItems key={index}> {item}</NotificationItems>
   ));
-
   return (
     <>
       <BoardOutterContainer>
         {/* Place Ship Buttons */}
-        <ButtonsContainer>
-          {!started ? (
-            <SettingsDiv>
-              <DifficultyDiv>
-                <PlaceBoatsDiv>Pick your Difficulty</PlaceBoatsDiv>
-                <BoatSelectorButton onClick={() => setDifficulty(1)}>
-                  Easy
-                </BoatSelectorButton>
-                <BoatSelectorButton onClick={() => setDifficulty(2)}>
-                  Hard
-                </BoatSelectorButton>
-                <BoatSelectorButton onClick={() => setDifficulty(3)}>
-                  Impossible
-                </BoatSelectorButton>
-              </DifficultyDiv>
-              <div>
-                {humanBoats[0].destroyer.position[0] &&
-                humanBoats[1].submarine.position[0] &&
-                humanBoats[2].cruiser.position[0] &&
-                humanBoats[3].battleship.position[0] &&
-                humanBoats[4].carrier.position[0] ? (
-                  <StartGameButton onClick={() => checkHumanBoats()}>
-                    Start
-                  </StartGameButton>
-                ) : (
-                  <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
-                )}
-                <BoatSelectorButton
-                  onClick={() => positionHumanBoatDestroyer()}
-                >
-                  Destroyer
-                </BoatSelectorButton>
-                <BoatSelectorButton
-                  style={{ background: "#A89E96" }}
-                  onClick={() => positionHumanBoatSubmarine()}
-                >
-                  Submarine
-                </BoatSelectorButton>
-                <BoatSelectorButton
-                  style={{ background: "#C29570" }}
-                  onClick={() => positionHumanBoatCruiser()}
-                >
-                  Cruiser
-                </BoatSelectorButton>
-                <BoatSelectorButton
-                  style={{ background: "#8f7e53" }}
-                  onClick={() => positionHumanBoatBattleship()}
-                >
-                  Battleship
-                </BoatSelectorButton>
-                <BoatSelectorButton
-                  style={{ background: "#423e3a", color: "#eeeeee" }}
-                  onClick={() => positionHumanBoatCarrier()}
-                >
-                  Carrier
-                </BoatSelectorButton>
-                <BoatSelectorButton
-                  style={{ background: "pink" }}
-                  onClick={() => rotateHumanBoat()}
-                >
-                  Rotate
-                </BoatSelectorButton>
-              </div>
-            </SettingsDiv>
-          ) : null}
-        </ButtonsContainer>
+        {!started ? (
+          <ButtonsContainer>
+            {!started ? (
+              <SettingsDiv>
+                <DifficultyDiv>
+                  <PlaceBoatsDiv>Pick your Difficulty</PlaceBoatsDiv>
+                  <BoatSelectorButton
+                    style={{ background: "#3FBD8B" }}
+                    onClick={() => setDifficulty(1)}
+                  >
+                    Easy
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#C8BD58" }}
+                    onClick={() => setDifficulty(2)}
+                  >
+                    Hard
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#BD100F", color: "#eeeeee" }}
+                    onClick={() => setDifficulty(3)}
+                  >
+                    Impossible
+                  </BoatSelectorButton>
+                </DifficultyDiv>
+                <BoatsDiv>
+                  {humanBoats[0].destroyer.position[0] &&
+                  humanBoats[1].submarine.position[0] &&
+                  humanBoats[2].cruiser.position[0] &&
+                  humanBoats[3].battleship.position[0] &&
+                  humanBoats[4].carrier.position[0] ? (
+                    <StartGameButton onClick={() => checkHumanBoats()}>
+                      Start
+                    </StartGameButton>
+                  ) : (
+                    <PlaceBoatsDiv>Place your boats!</PlaceBoatsDiv>
+                  )}
+                  <BoatSelectorButton
+                    onClick={() => positionHumanBoatDestroyer()}
+                  >
+                    Destroyer
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#A89E96" }}
+                    onClick={() => positionHumanBoatSubmarine()}
+                  >
+                    Submarine
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#C29570" }}
+                    onClick={() => positionHumanBoatCruiser()}
+                  >
+                    Cruiser
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#8f7e53" }}
+                    onClick={() => positionHumanBoatBattleship()}
+                  >
+                    Battleship
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "#423e3a", color: "#eeeeee" }}
+                    onClick={() => positionHumanBoatCarrier()}
+                  >
+                    Carrier
+                  </BoatSelectorButton>
+                  <BoatSelectorButton
+                    style={{ background: "pink" }}
+                    onClick={() => rotateHumanBoat()}
+                  >
+                    Rotate
+                  </BoatSelectorButton>
+                </BoatsDiv>
+              </SettingsDiv>
+            ) : null}
+          </ButtonsContainer>
+        ) : null}
 
         {/* Human Board */}
         <BoardTitleContainer>
@@ -2300,24 +2311,23 @@ const Board = () => {
         </BoardTitleContainer>
 
         {/* Game Buttons */}
-        <RightSideContainer>
-          <ButtonsContainer>
-            {started && !humanWin && !computerWin ? (
-              <ShootButton onClick={() => finalizeAttack(attackPosition)}>
-                Fire!
-              </ShootButton>
-            ) : null}
-
-            {started ? (
-              <RestartGameButton onClick={() => restartGame()}>
-                Play Again
-              </RestartGameButton>
-            ) : null}
-          </ButtonsContainer>
-          {started ? (
+        {started ? (
+          <RightSideContainer>
+            <RightSideButtonsDiv>
+              {started && !humanWin && !computerWin ? (
+                <ShootButton onClick={() => finalizeAttack(attackPosition)}>
+                  Fire!
+                </ShootButton>
+              ) : null}
+              {started ? (
+                <RestartGameButton onClick={() => restartGame()}>
+                  Play Again
+                </RestartGameButton>
+              ) : null}
+            </RightSideButtonsDiv>
             <NotificationsBoard>{NotificationItem}</NotificationsBoard>
-          ) : null}
-        </RightSideContainer>
+          </RightSideContainer>
+        ) : null}
       </BoardOutterContainer>
     </>
   );

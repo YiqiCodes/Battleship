@@ -4,6 +4,8 @@ export const BoardDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
+  width: 100%;
 `;
 
 export const StartGame = styled.button`
