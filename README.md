@@ -6,4 +6,4 @@ Pick from three difficulties and position your boats! First person to sink the e
 
 ## Screenshots
 
-!["Battleship Screenshot"](https://github.com/TylerZhang00/SentimentAnalysis/blob/master/docs/SentimentMain.png?raw=true)
+!["Battleship Screenshot"](https://github.com/TylerZhang00/Battleship/blob/master/src/assets/main.png?raw=true)
