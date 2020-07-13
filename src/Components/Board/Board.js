@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   Square,
   BoardContainer,
+  BoardTitlesContainer,
   BoardTitleContainer,
   BoardOutterContainer,
   ButtonsContainer,
@@ -19,6 +20,7 @@ import {
   RightSideContainer,
   NotificationsBoard,
   NotificationItems,
+  BoardTitle,
 } from "./Board.styles";
 
 const Board = () => {
@@ -2047,269 +2049,278 @@ const Board = () => {
           </ButtonsContainer>
         ) : null}
 
-        {/* Human Board */}
-        <BoardTitleContainer>
-          {humanWin ? (
-            <p>Human Wins!</p>
-          ) : computerWin ? (
-            <p>Human Loses!</p>
-          ) : (
-            <p>Your Board</p>
-          )}
-          <BoardContainer>
-            {board.map((boatPosition, index) => {
-              return (
-                <Square
-                  key={index}
-                  style={{
-                    background:
-                      humanBoats[0].destroyer.position[0] === boatPosition
-                        ? "#e3befa"
-                        : humanBoats[0].destroyer.position[1] === boatPosition
-                        ? "#e3befa"
-                        : humanBoats[1].submarine.position[0] === boatPosition
-                        ? "#C76EFF"
-                        : humanBoats[1].submarine.position[1] === boatPosition
-                        ? "#C76EFF"
-                        : humanBoats[2].cruiser.position[0] === boatPosition
-                        ? "#811DBF"
-                        : humanBoats[2].cruiser.position[1] === boatPosition
-                        ? "#811DBF"
-                        : humanBoats[2].cruiser.position[2] === boatPosition
-                        ? "#811DBF"
-                        : humanBoats[3].battleship.position[0] === boatPosition
-                        ? "#8B4D83"
-                        : humanBoats[3].battleship.position[1] === boatPosition
-                        ? "#8B4D83"
-                        : humanBoats[3].battleship.position[2] === boatPosition
-                        ? "#8B4D83"
-                        : humanBoats[3].battleship.position[3] === boatPosition
-                        ? "#8B4D83"
-                        : humanBoats[4].carrier.position[0] === boatPosition
-                        ? "#643780"
-                        : humanBoats[4].carrier.position[1] === boatPosition
-                        ? "#643780"
-                        : humanBoats[4].carrier.position[2] === boatPosition
-                        ? "#643780"
-                        : humanBoats[4].carrier.position[3] === boatPosition
-                        ? "#643780"
-                        : humanBoats[4].carrier.position[4] === boatPosition
-                        ? "#643780"
-                        : squaresComputerAttacked.includes(boatPosition)
-                        ? "#FF9387"
-                        : computerWin || humanWin === true
-                        ? "#FDFFBA"
-                        : "",
-                    color:
-                      humanBoats[0].destroyer.revealed[0] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[0].destroyer.revealed[1] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[1].submarine.revealed[0] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[1].submarine.revealed[1] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[2].cruiser.revealed[0] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[2].cruiser.revealed[1] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[2].cruiser.revealed[2] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[3].battleship.revealed[0] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[3].battleship.revealed[1] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[3].battleship.revealed[2] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[3].battleship.revealed[3] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[4].carrier.revealed[0] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[4].carrier.revealed[1] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[4].carrier.revealed[2] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[4].carrier.revealed[3] === boatPosition
-                        ? "#eeeeee"
-                        : humanBoats[4].carrier.revealed[4] === boatPosition
-                        ? "#eeeeee"
-                        : "",
-                  }}
-                  value={boatPosition}
-                  // Cannot click on human board if game is started
-                  onClick={
-                    !started &&
-                    !humanWin &&
-                    !computerWin &&
-                    humanBoats[0].destroyer.active
-                      ? () => positionHumanBoatDestroyer(boatPosition)
-                      : !started &&
-                        !humanWin &&
-                        !computerWin &&
-                        humanBoats[1].submarine.active
-                      ? () => positionHumanBoatSubmarine(boatPosition)
-                      : !started &&
-                        !humanWin &&
-                        !computerWin &&
-                        humanBoats[2].cruiser.active
-                      ? () => positionHumanBoatCruiser(boatPosition)
-                      : !started &&
-                        !humanWin &&
-                        !computerWin &&
-                        humanBoats[3].battleship.active
-                      ? () => positionHumanBoatBattleship(boatPosition)
-                      : !started &&
-                        !humanWin &&
-                        !computerWin &&
-                        humanBoats[4].carrier.active
-                      ? () => positionHumanBoatCarrier(boatPosition)
-                      : null
-                  }
-                >
-                  X
-                </Square>
-              );
-            })}
-          </BoardContainer>
-        </BoardTitleContainer>
+        <BoardTitlesContainer>
+          {/* Human Board */}
+          <BoardTitleContainer>
+            {humanWin ? (
+              <BoardTitle>Human Wins!</BoardTitle>
+            ) : computerWin ? (
+              <BoardTitle>Human Loses!</BoardTitle>
+            ) : (
+              <BoardTitle>Your Board</BoardTitle>
+            )}
+            <BoardContainer>
+              {board.map((boatPosition, index) => {
+                return (
+                  <Square
+                    key={index}
+                    style={{
+                      background:
+                        humanBoats[0].destroyer.position[0] === boatPosition
+                          ? "#e3befa"
+                          : humanBoats[0].destroyer.position[1] === boatPosition
+                          ? "#e3befa"
+                          : humanBoats[1].submarine.position[0] === boatPosition
+                          ? "#C76EFF"
+                          : humanBoats[1].submarine.position[1] === boatPosition
+                          ? "#C76EFF"
+                          : humanBoats[2].cruiser.position[0] === boatPosition
+                          ? "#811DBF"
+                          : humanBoats[2].cruiser.position[1] === boatPosition
+                          ? "#811DBF"
+                          : humanBoats[2].cruiser.position[2] === boatPosition
+                          ? "#811DBF"
+                          : humanBoats[3].battleship.position[0] ===
+                            boatPosition
+                          ? "#8B4D83"
+                          : humanBoats[3].battleship.position[1] ===
+                            boatPosition
+                          ? "#8B4D83"
+                          : humanBoats[3].battleship.position[2] ===
+                            boatPosition
+                          ? "#8B4D83"
+                          : humanBoats[3].battleship.position[3] ===
+                            boatPosition
+                          ? "#8B4D83"
+                          : humanBoats[4].carrier.position[0] === boatPosition
+                          ? "#643780"
+                          : humanBoats[4].carrier.position[1] === boatPosition
+                          ? "#643780"
+                          : humanBoats[4].carrier.position[2] === boatPosition
+                          ? "#643780"
+                          : humanBoats[4].carrier.position[3] === boatPosition
+                          ? "#643780"
+                          : humanBoats[4].carrier.position[4] === boatPosition
+                          ? "#643780"
+                          : squaresComputerAttacked.includes(boatPosition)
+                          ? "#FF9387"
+                          : computerWin || humanWin === true
+                          ? "#FDFFBA"
+                          : "",
+                      color:
+                        humanBoats[0].destroyer.revealed[0] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[0].destroyer.revealed[1] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[1].submarine.revealed[0] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[1].submarine.revealed[1] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[2].cruiser.revealed[0] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[2].cruiser.revealed[1] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[2].cruiser.revealed[2] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[3].battleship.revealed[0] ===
+                            boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[3].battleship.revealed[1] ===
+                            boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[3].battleship.revealed[2] ===
+                            boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[3].battleship.revealed[3] ===
+                            boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[4].carrier.revealed[0] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[4].carrier.revealed[1] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[4].carrier.revealed[2] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[4].carrier.revealed[3] === boatPosition
+                          ? "#eeeeee"
+                          : humanBoats[4].carrier.revealed[4] === boatPosition
+                          ? "#eeeeee"
+                          : "",
+                    }}
+                    value={boatPosition}
+                    // Cannot click on human board if game is started
+                    onClick={
+                      !started &&
+                      !humanWin &&
+                      !computerWin &&
+                      humanBoats[0].destroyer.active
+                        ? () => positionHumanBoatDestroyer(boatPosition)
+                        : !started &&
+                          !humanWin &&
+                          !computerWin &&
+                          humanBoats[1].submarine.active
+                        ? () => positionHumanBoatSubmarine(boatPosition)
+                        : !started &&
+                          !humanWin &&
+                          !computerWin &&
+                          humanBoats[2].cruiser.active
+                        ? () => positionHumanBoatCruiser(boatPosition)
+                        : !started &&
+                          !humanWin &&
+                          !computerWin &&
+                          humanBoats[3].battleship.active
+                        ? () => positionHumanBoatBattleship(boatPosition)
+                        : !started &&
+                          !humanWin &&
+                          !computerWin &&
+                          humanBoats[4].carrier.active
+                        ? () => positionHumanBoatCarrier(boatPosition)
+                        : null
+                    }
+                  >
+                    X
+                  </Square>
+                );
+              })}
+            </BoardContainer>
+          </BoardTitleContainer>
 
-        {/* Computer Board */}
-        <BoardTitleContainer>
-          {computerWin ? (
-            <p>Computer Wins!</p>
-          ) : humanWin ? (
-            <p>Computer Loses!</p>
-          ) : (
-            <p>Computer's Board</p>
-          )}
-          <BoardContainer>
-            {board.map((computerBoatPosition, index) => {
-              return (
-                <Square
-                  key={index}
-                  style={{
-                    background:
-                      attackPosition === computerBoatPosition
-                        ? "red"
-                        : computerBoats[0].destroyer.revealed[0] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[0].destroyer.revealed[1] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[1].submarine.revealed[0] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[1].submarine.revealed[1] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[2].cruiser.revealed[0] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[2].cruiser.revealed[1] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[2].cruiser.revealed[2] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[3].battleship.revealed[0] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[3].battleship.revealed[1] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[3].battleship.revealed[2] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[3].battleship.revealed[3] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[4].carrier.revealed[0] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[4].carrier.revealed[1] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[4].carrier.revealed[2] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[4].carrier.revealed[3] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : computerBoats[4].carrier.revealed[4] ===
-                          computerBoatPosition
-                        ? "#111111"
-                        : squaresHumanAttacked.includes(computerBoatPosition)
-                        ? "#FF9387"
-                        : humanWin || computerWin === true
-                        ? "#FDFFBA"
-                        : "",
-                    color:
-                      computerBoats[0].destroyer.revealed[0] ===
-                      computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[0].destroyer.revealed[1] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[1].submarine.revealed[0] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[1].submarine.revealed[1] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[2].cruiser.revealed[0] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[2].cruiser.revealed[1] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[2].cruiser.revealed[2] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[3].battleship.revealed[0] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[3].battleship.revealed[1] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[3].battleship.revealed[2] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[3].battleship.revealed[3] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed[0] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed[1] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed[2] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed[3] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : computerBoats[4].carrier.revealed[4] ===
-                          computerBoatPosition
-                        ? "#eeeeee"
-                        : "",
-                  }}
-                  value={computerBoatPosition}
-                  // Can click on computer board if game is started
-                  onClick={
-                    started && !humanWin && !computerWin
-                      ? () => attackComputer(computerBoatPosition)
-                      : null
-                  }
-                >
-                  X
-                </Square>
-              );
-            })}
-          </BoardContainer>
-        </BoardTitleContainer>
-
+          {/* Computer Board */}
+          <BoardTitleContainer>
+            {computerWin ? (
+              <BoardTitle>Computer Wins!</BoardTitle>
+            ) : humanWin ? (
+              <BoardTitle>Computer Loses!</BoardTitle>
+            ) : (
+              <BoardTitle>Computer's Board</BoardTitle>
+            )}
+            <BoardContainer>
+              {board.map((computerBoatPosition, index) => {
+                return (
+                  <Square
+                    key={index}
+                    style={{
+                      background:
+                        attackPosition === computerBoatPosition
+                          ? "red"
+                          : computerBoats[0].destroyer.revealed[0] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[0].destroyer.revealed[1] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[1].submarine.revealed[0] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[1].submarine.revealed[1] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[2].cruiser.revealed[0] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[2].cruiser.revealed[1] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[2].cruiser.revealed[2] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[3].battleship.revealed[0] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[3].battleship.revealed[1] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[3].battleship.revealed[2] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[3].battleship.revealed[3] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[4].carrier.revealed[0] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[4].carrier.revealed[1] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[4].carrier.revealed[2] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[4].carrier.revealed[3] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : computerBoats[4].carrier.revealed[4] ===
+                            computerBoatPosition
+                          ? "#111111"
+                          : squaresHumanAttacked.includes(computerBoatPosition)
+                          ? "#FF9387"
+                          : humanWin || computerWin === true
+                          ? "#FDFFBA"
+                          : "",
+                      color:
+                        computerBoats[0].destroyer.revealed[0] ===
+                        computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[0].destroyer.revealed[1] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[1].submarine.revealed[0] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[1].submarine.revealed[1] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[2].cruiser.revealed[0] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[2].cruiser.revealed[1] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[2].cruiser.revealed[2] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[3].battleship.revealed[0] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[3].battleship.revealed[1] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[3].battleship.revealed[2] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[3].battleship.revealed[3] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[4].carrier.revealed[0] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[4].carrier.revealed[1] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[4].carrier.revealed[2] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[4].carrier.revealed[3] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : computerBoats[4].carrier.revealed[4] ===
+                            computerBoatPosition
+                          ? "#eeeeee"
+                          : "",
+                    }}
+                    value={computerBoatPosition}
+                    // Can click on computer board if game is started
+                    onClick={
+                      started && !humanWin && !computerWin
+                        ? () => attackComputer(computerBoatPosition)
+                        : null
+                    }
+                  >
+                    X
+                  </Square>
+                );
+              })}
+            </BoardContainer>
+          </BoardTitleContainer>
+        </BoardTitlesContainer>
         {/* Game Buttons */}
         {started ? (
           <RightSideContainer>

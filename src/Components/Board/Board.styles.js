@@ -9,12 +9,26 @@ export const BoardOutterContainer = styled.div`
   align-items: center;
 `;
 
+export const BoardTitlesContainer = styled.div`
+  display: flex;
+  @media screen and (max-width: 1100px) {
+    height: 100%;
+    flex-direction: row;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+`;
+
 export const BoardTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 500px;
   width: 400px;
+  @media screen and (max-width: 1100px) {
+    width: 250px;
+    height: 250px;
+  }
 `;
 
 export const BoardContainer = styled.div`
@@ -25,6 +39,10 @@ export const BoardContainer = styled.div`
   height: 320px;
   margin: 2rem;
   border: 1rem solid #88c7d1;
+  @media screen and (max-width: 1100px) {
+    width: 170px;
+    height: 170px;
+  }
 `;
 
 export const Square = styled.div`
@@ -36,6 +54,10 @@ export const Square = styled.div`
   background: #eeeeee;
   border: 1px solid #88c7d1;
   color: transparent;
+  @media screen and (max-width: 1100px) {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export const RightSideContainer = styled.div`
@@ -45,6 +67,10 @@ export const RightSideContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: 0 1rem;
+  @media screen and (max-width: 1100px) {
+    width: 150px;
+    height: 150px;
+  }
 `;
 
 export const ButtonsContainer = styled.div`
@@ -60,10 +86,15 @@ export const RightSideButtonsDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   padding: 4px;
   margin: 10px 0px;
   border-radius: 8px;
   background: #eeeeee;
+  @media screen and (max-width: 1100px) {
+    flex-direction: column;
+    max-width: 100px;
+  }
 `;
 
 export const StartGameButton = styled.button`
@@ -139,6 +170,9 @@ export const DifficultyDiv = styled.div`
   padding: 10px;
   border-radius: 8px;
   background: #eeeeee;
+  @media screen and (max-width: 376px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const BoatsDiv = styled.div`
@@ -151,6 +185,10 @@ export const BoatsDiv = styled.div`
 export const SettingsDiv = styled.div`
   display: flex;
   flex-direction: row;
+  @media screen and (max-width: 376px) {
+    flex-direction: column;
+    margin: 8px 0px;
+  }
 `;
 
 export const NotificationsBoard = styled.div`
@@ -160,6 +198,10 @@ export const NotificationsBoard = styled.div`
   justify-content: space-around;
   overflow-y: scroll;
   border-radius: 8px;
+  @media screen and (max-width: 1100px) {
+    height: 0px;
+    width: 0px;
+  }
 `;
 
 export const NotificationItems = styled.div`
@@ -169,4 +211,12 @@ export const NotificationItems = styled.div`
   border-bottom: 0.5px solid #111111;
   color: #111111;
   font-size: 15px;
+`;
+
+export const BoardTitle = styled.div`
+  @media screen and (max-width: 1100px) {
+    color: #111111;
+    height: 0px;
+    width: 0px;
+  }
 `;
