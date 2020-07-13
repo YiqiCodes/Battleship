@@ -16,6 +16,7 @@ export const BoardTitleContainer = styled.div`
   height: 500px;
   width: 400px;
 `;
+
 export const BoardContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -79,6 +80,10 @@ export const RestartGameButton = styled.button`
   margin: 10px 0px;
   background: #48bd70;
   color: #111111;
+  opacity: 0.75;
+  :hover {
+    opacity: 1;
+  }
 `;
 
 export const ShootButton = styled.button`
@@ -88,6 +93,10 @@ export const ShootButton = styled.button`
   margin: 10px 0px;
   background: #ff7f7a;
   color: #111111;
+  opacity: 0.75;
+  :hover {
+    opacity: 1;
+  }
 `;
 
 export const BoatSelectorButton = styled.button`
@@ -103,6 +112,10 @@ export const BoatSelectorButton = styled.button`
   border-radius: 8px;
   border: 2px solid #111111;
   margin: 4px 0px;
+  opacity: 0.75;
+  :hover {
+    opacity: 1;
+  }
 `;
 
 export const PlaceBoatsDiv = styled.div`
